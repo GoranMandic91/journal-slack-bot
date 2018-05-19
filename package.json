@@ -25,6 +25,10 @@
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoranMandic91/journal-slack-bot.git"
+  },
   "keywords": [
     "bots",
     "chatbots",
