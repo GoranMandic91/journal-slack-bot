@@ -137,14 +137,9 @@ if (!process.env.clientId || !process.env.clientSecret) {
       });
   } else {
       console.log('~~~~~~~~~~');
-      console.log('NOTE: Botkit Studio functionality has not been enabled');
-      console.log('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
+      console.log('Jorunal Slack bot started!');
   }
 }
-
-
-
-
 
 function usage_tip() {
     console.log('~~~~~~~~~~');
