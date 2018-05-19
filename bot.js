@@ -137,7 +137,7 @@ if (!process.env.clientId || !process.env.clientSecret) {
       });
   } else {
       console.log('~~~~~~~~~~');
-      console.log('Jorunal Slack bot started!');
+      console.log('Journal Slack bot started!');
   }
 }
 
