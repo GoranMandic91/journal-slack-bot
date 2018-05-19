@@ -18,7 +18,7 @@ Update the `.env` file with your newly acquired tokens.
 
 Launch your bot application by typing:
 
-`node .`
+`npm start`
 
 Now, visit your new bot's login page: http://localhost:3030/login
 
