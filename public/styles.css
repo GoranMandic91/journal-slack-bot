@@ -11,7 +11,8 @@ html {
 
 .wrapper {
   max-width: 1000px;
-  margin: 0 auto; }
+  margin: 0 auto; 
+}
 
 .box {
   border: 2px solid #CCC;
@@ -24,9 +25,9 @@ footer {
   text-align: center; }
 
 .hero {
-  text-align: center;
   padding: 2rem; }
   .hero h1 {
+    text-align: center;
     font-size: 4rem; }
 
 a {
