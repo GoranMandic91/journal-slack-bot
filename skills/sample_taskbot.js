@@ -55,6 +55,7 @@ module.exports = function(controller) {
             if (!user) {
                 user = {};
                 user.id = message.user;
+                user.name = `<@${message.user}>`; 
                 user.tasks = [];
             }
 

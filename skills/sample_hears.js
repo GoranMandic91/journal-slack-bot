@@ -11,7 +11,7 @@ respond immediately with a single line response.
 
 var wordfilter = require('wordfilter');
 
-module.exports = function(controller) {
+module.exports = function (controller) {
 
     /* Collect some very simple runtime stats for use in the uptime/debug command */
     var stats = {
@@ -19,18 +19,18 @@ module.exports = function(controller) {
         convos: 0,
     }
 
-    controller.on('heard_trigger', function() {
+    controller.on('heard_trigger', function () {
         stats.triggers++;
     });
 
-    controller.on('conversationStarted', function() {
+    controller.on('conversationStarted', function () {
         stats.convos++;
     });
 
 
-    controller.hears(['^uptime','^debug'], 'direct_message,direct_mention', function(bot, message) {
+    controller.hears(['^uptime', '^debug'], 'direct_message,direct_mention', function (bot, message) {
 
-        bot.createConversation(message, function(err, convo) {
+        bot.createConversation(message, function (err, convo) {
             if (!err) {
                 convo.setVar('uptime', formatUptime(process.uptime()));
                 convo.setVar('convos', stats.convos);
@@ -43,11 +43,17 @@ module.exports = function(controller) {
 
     });
 
-    controller.hears(['^say (.*)','^say'], 'direct_message,direct_mention', function(bot, message) {
+    controller.hears(['^say (.*)', '^say'], 'direct_message,direct_mention', function (bot, message) {
         if (message.match[1]) {
 
             if (!wordfilter.blacklisted(message.match[1])) {
-                bot.reply(message, message.match[1]);
+                controller.storage.users.get(message.user, function (err, user) {
+                    if (user && user.name) {
+                        bot.reply(message, 'Hello ' + user.name + '!' + 'Here you go:' + message.match[1]);
+                    } else {
+                        bot.reply(message, 'Hello.' + ' Here you go:' + message.match[1]);
+                    }
+                });
             } else {
                 bot.reply(message, '_sigh_');
             }
