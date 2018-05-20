@@ -4,7 +4,6 @@ var cookieParser = require('cookie-parser');
 var querystring = require('querystring');
 var debug = require('debug')('botkit:webserver');
 var http = require('http');
-var hbs = require('express-hbs');
 
 module.exports = function(controller) {
 
@@ -12,11 +11,6 @@ module.exports = function(controller) {
     webserver.use(cookieParser());
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({ extended: true }));
-
-    // set up handlebars ready for tabs
-    webserver.engine('hbs', hbs.express4({partialsDir: __dirname + '/../views'}));
-    webserver.set('view engine', 'hbs');
-    webserver.set('views', __dirname + '/../views/');
 
     // import express middlewares that are present in /components/express_middleware
     var normalizedPath = require("path").join(__dirname, "express_middleware");

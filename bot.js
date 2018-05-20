@@ -80,7 +80,7 @@ webserver.get('/', function (req, res) {
   res.render('index', {
     domain: req.get('host'),
     protocol: req.protocol,
-    layout: 'index'
+    layout: 'index.html'
   });
 })
 // Set up a simple storage backend for keeping a record of customers
