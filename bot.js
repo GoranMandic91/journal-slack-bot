@@ -38,11 +38,19 @@ This bot demonstrates many of the core features of Botkit:
     If successful, your bot will come online and greet you.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-var env = require('node-env-file');
-env(__dirname + '/.env');
+var config = require('config');
+
+if (config.has('clientId')) {
+  var clientId = config.get('clientId');
+}
+
+if (config.has('clientSecret')) {
+  var clientSecret = config.get('clientSecret');
+}
 
 
-if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
+
+if (!clientId || !clientSecret || !process.env.PORT) {
   usage_tip();
   // process.exit(1);
 }
@@ -51,18 +59,19 @@ var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
 
 var bot_options = {
-  clientId: process.env.clientId,
-  clientSecret: process.env.clientSecret,
+  clientId: clientId,
+  clientSecret: clientSecret,
   debug: true,
   scopes: ['bot'],
-  studio_token: process.env.studio_token,
-  studio_command_uri: process.env.studio_command_uri
 };
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
-if (process.env.MONGO_URI) {
-  var mongoStorage = require('botkit-storage-mongo')({ mongoUri: process.env.MONGO_URI });
+if (config.has('mongo_uri')) {
+  var mongo_uri = config.get('mongo_uri');
+}
+if (mongo_uri) {
+  var mongoStorage = require('botkit-storage-mongo')({ mongoUri: mongo_uri });
   bot_options.storage = mongoStorage;
 } else {
   bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
