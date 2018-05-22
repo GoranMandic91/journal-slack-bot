@@ -1,6 +1,6 @@
 {
   "name": "JournalBot",
-  "description": "A starting point for building custom Slack applications",
+  "description": "Get the latest news and weather forecast in Slack",
   "keywords": ["node", "bots", "slack","botkit"],
   "success_url":"/",
   "addons":[
@@ -15,10 +15,6 @@
       },
       "clientSecret": {
           "description": "Client Secret provided by Slack"
-      },
-      "studio_token": {
-          "description": "Token associated with your bot in Botkit Studio",
-          "required":false
       }
   }
 }
