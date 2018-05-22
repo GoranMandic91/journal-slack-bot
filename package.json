@@ -4,23 +4,21 @@
   "description": "Simple Journal Slack bot implemented with Botkit framework",
   "main": "bot.js",
   "scripts": {
-    "start:development": "cross-env NODE_ENV=development PORT=3030 concurrently  --kill-others \"nodemon --inspect=9229 ./bot.js\"",
-    "start:production": "cross-env NODE_ENV=production node ./bot.js"
+    "start": "concurrently --kill-others \"nodemon --inspect=9229 ./bot.js\""
   },
   "dependencies": {
     "@types/node": "^9.6.6",
+    "typescript": "^2.8.3",
     "body-parser": "^1.15.2",
     "botkit": "^0.6.12",
     "botkit-storage-mongo": "^1.0.6",
-    "config": "^1.30.0",
     "cookie-parser": "^1.4.3",
     "debug": "^2.3.3",
     "express": "^4.14.0",
+    "node-env-file": "^0.1.8",
     "querystring": "^0.2.0",
     "request": "^2.79.0",
-    "typescript": "^2.8.3",
-    "wordfilter": "^0.2.6",
-    "cross-env": "^5.1.5"
+    "wordfilter": "^0.2.6"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
