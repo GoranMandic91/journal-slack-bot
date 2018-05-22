@@ -6,15 +6,11 @@ module.exports = function (webserver, controller) {
     webserver.post('/slack/receive', function (req, res) {
 
         // NOTE: we should enforce the token check here
-        // if (req.body.token === process.env.token) {
-            // respond to Slack that the webhook has been received.
-            res.status(200);
+        res.status(200);
 
-            // Now, pass the webhook into be processed
-            controller.handleWebhookPayload(req, res);
-        // } else {
-        //     res.status(403);
-        // }
+        // Now, pass the webhook into be processed
+        controller.handleWebhookPayload(req, res);
+
 
 
     });

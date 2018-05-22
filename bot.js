@@ -46,7 +46,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
   usage_tip();
-  // process.exit(1);
 }
 
 var Botkit = require('botkit');
@@ -55,11 +54,12 @@ var debug = require('debug')('botkit:main');
 var bot_options = {
   clientId: process.env.clientId,
   clientSecret: process.env.clientSecret,
-  debug: true,
   scopes: ['bot'],
-  studio_token: process.env.studio_token,
-  studio_command_uri: process.env.studio_command_uri
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  bot_options.debug = true;
+}
 
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
