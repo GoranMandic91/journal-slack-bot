@@ -74,7 +74,7 @@ var controller = Botkit.slackbot(bot_options);
 controller.startTicking();
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
-var webserver = require(__dirname + '/components/express_webserver.js')(controller);
+var webserver = require(__dirname + '/src/components/express_webserver.js')(controller);
 
 webserver.get('/', function (req, res) {
   res.render('index', {
@@ -85,15 +85,15 @@ webserver.get('/', function (req, res) {
 })
 // Set up a simple storage backend for keeping a record of customers
 // who sign up for the app via the oauth
-require(__dirname + '/components/user_registration.js')(controller);
+require(__dirname + '/src/components/user_registration.js')(controller);
 
 // Send an onboarding message when a new team joins
-require(__dirname + '/components/onboarding.js')(controller);
+require(__dirname + '/src/components/onboarding.js')(controller);
 
 
-var normalizedPath = require("path").join(__dirname, "skills");
+var normalizedPath = require("path").join(__dirname, "src/skills");
 require("fs").readdirSync(normalizedPath).forEach(function (file) {
-  require("./skills/" + file)(controller);
+  require("./src/skills/" + file)(controller);
 });
 
 console.log('~~~~~~~~~~');
