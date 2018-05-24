@@ -32,12 +32,12 @@ module.exports = (controller) => {
                             {
                                 title: "e-mail",
                                 value: member.profile.email,
-                                short: true
+                                short: false
                             },
                             {
                                 title: "username",
                                 value: '<@' + member.id + '>',
-                                short: true
+                                short: false
                             }
                         ],
                         footer: "Journal Bot",

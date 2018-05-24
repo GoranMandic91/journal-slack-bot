@@ -54,12 +54,9 @@ var debug = require('debug')('botkit:main');
 var bot_options = {
   clientId: process.env.clientId,
   clientSecret: process.env.clientSecret,
+  debug: true,
   scopes: ['bot'],
 };
-
-if (process.env.NODE_ENV !== 'production') {
-  bot_options.debug = true;
-}
 
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
