@@ -1,6 +1,7 @@
-var debug = require('debug')('botkit:channel_join');
+import { SlackController } from 'botkit';
+let debug = require('debug')('botkit:channel_join');
 
-module.exports = (controller) => {
+module.exports = (controller: SlackController) => {
 
     controller.on('bot_channel_join', (bot, message) => {
 

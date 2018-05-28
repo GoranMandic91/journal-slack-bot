@@ -4,7 +4,7 @@
   "description": "Simple Journal Slack bot implemented with Botkit framework",
   "main": "bot.js",
   "scripts": {
-    "start": "concurrently --kill-others \"nodemon --inspect=9229 ./bot.js\""
+    "start": "concurrently --kill-others \"tsc \" \"nodemon --inspect=9230 ./bot.js\""
   },
   "dependencies": {
     "@types/node": "^9.6.6",
