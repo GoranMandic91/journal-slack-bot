@@ -4,7 +4,6 @@
   "description": "Simple Journal Slack bot implemented with Botkit framework",
   "main": "bot.js",
   "scripts": {
-
     "start": "concurrently --kill-others \"tsc \" \"nodemon --inspect=9230 ./bot.js\"",
     "localtunnel": "lt --subdomain journalslackbot --port 3030"
 

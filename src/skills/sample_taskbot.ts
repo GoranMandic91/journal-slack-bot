@@ -1,9 +1,5 @@
 import { SlackController } from "botkit";
-interface SlackUser {
-    id: string;
-    name?: string;
-    tasks?: string[];
-}
+import { SlackUser } from "../models/slack_user";
 
 module.exports = (controller: SlackController) => {
 
