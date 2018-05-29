@@ -1,13 +1,19 @@
+import { SlackController } from "botkit";
+interface SlackUser {
+    id: string;
+    name?: string;
+    tasks?: string[];
+}
 
-module.exports = function(controller) {
+module.exports = (controller: SlackController) => {
 
     // listen for someone saying 'tasks' to the bot
     // reply with a list of current tasks loaded from the storage system
     // based on this user's id
-    controller.hears(['tasks','todo'], 'direct_message', function(bot, message) {
+    controller.hears(['tasks', 'todo'], 'direct_message', (bot, message) => {
 
         // load user from storage...
-        controller.storage.users.get(message.user, function(err, user) {
+        controller.storage.users.get(message.user, (err, user: SlackUser) => {
 
             // user object can contain arbitary keys. we will store tasks in .tasks
             if (!user || !user.tasks || user.tasks.length == 0) {
@@ -28,21 +34,22 @@ module.exports = function(controller) {
 
     // listen for a user saying "add <something>", and then add it to the user's list
     // store the new list in the storage system
-    controller.hears(['add (.*)'],'direct_message,direct_mention,mention', function(bot, message) {
+    controller.hears(['add (.*)'], 'direct_message,direct_mention,mention', (bot, message) => {
 
         var newtask = message.match[1];
-        controller.storage.users.get(message.user, function(err, user) {
+        controller.storage.users.get(message.user, (err, user: SlackUser) => {
 
             if (!user) {
-                user = {};
-                user.id = message.user;
-                user.name = `<@${message.user}>`; 
-                user.tasks = [];
+                user = {
+                    id: message.user,
+                    name: `<@${message.user}>`,
+                    tasks: []
+                };
             }
 
             user.tasks.push(newtask);
 
-            controller.storage.users.save(user, function(err,saved) {
+            controller.storage.users.save(user, (err, saved) => {
 
                 if (err) {
                     bot.reply(message, 'I experienced an error adding your task: ' + err);
@@ -51,7 +58,7 @@ module.exports = function(controller) {
                         name: 'thumbsup',
                         channel: message.channel,
                         timestamp: message.ts
-                    });
+                    }, () => { });
                 }
 
             });
@@ -60,30 +67,32 @@ module.exports = function(controller) {
     });
 
     // listen for a user saying "done <number>" and mark that item as done.
-    controller.hears(['done (.*)'],'direct_message', function(bot, message) {
+    controller.hears(['done (.*)'], 'direct_message', (bot, message) => {
 
-        var number = message.match[1];
+        var number = +message.match[1];
 
         if (isNaN(number)) {
             bot.reply(message, 'Please specify a number.');
         } else {
 
             // adjust for 0-based array index
-            number = parseInt(number) - 1;
+            number = number - 1;
 
-            controller.storage.users.get(message.user, function(err, user) {
+            controller.storage.users.get(message.user, (err, user: SlackUser) => {
 
                 if (!user) {
-                    user = {};
-                    user.id = message.user;
-                    user.tasks = [];
+                    user = {
+                        id: message.user,
+                        tasks: [],
+                    };
+
                 }
 
                 if (number < 0 || number >= user.tasks.length) {
                     bot.reply(message, 'Sorry, your input is out of range. Right now there are ' + user.tasks.length + ' items on your list.');
                 } else {
 
-                    var item = user.tasks.splice(number,1);
+                    var item = user.tasks.splice(number, 1);
 
                     // reply with a strikethrough message...
                     bot.reply(message, '~' + item + '~');
@@ -106,7 +115,7 @@ module.exports = function(controller) {
         var text = '';
 
         for (var t = 0; t < user.tasks.length; t++) {
-            text = text + '> `' +  (t + 1) + '`) ' +  user.tasks[t] + '\n';
+            text = text + '> `' + (t + 1) + '`) ' + user.tasks[t] + '\n';
         }
 
         return text;

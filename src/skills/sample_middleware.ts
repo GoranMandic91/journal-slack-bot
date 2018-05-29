@@ -1,4 +1,6 @@
-module.exports = function(controller) {
+import { SlackController } from "botkit";
+
+module.exports = (controller: SlackController) => {
 
     // controller.middleware.receive.use(function(bot, message, next) {
     //
@@ -16,5 +18,4 @@ module.exports = function(controller) {
     //     next();
     //
     // });
-
 }

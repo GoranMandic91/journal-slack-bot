@@ -50,7 +50,7 @@ module.exports = function(controller) {
             controller.storage.teams.all(function(err, list) {
 
                 if (err) {
-                    throw new Error('Error: Could not load existing bots:', err);
+                    throw new Error('Error: Could not load existing bots:' + err);
                 } else {
                     for (var l = 0; l < list.length; l++) {
                         manager.start(controller.spawn(list[l].bot));

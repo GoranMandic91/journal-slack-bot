@@ -1,17 +1,8 @@
-/*
-
-WHAT IS THIS?
-
-This module demonstrates simple uses of Botkit's `hears` handler functions.
-
-In these examples, Botkit is configured to listen for certain phrases, and then
-respond immediately with a single line response.
-
-*/
+import { SlackController } from "botkit";
 
 var wordfilter = require('wordfilter');
 
-module.exports = function (controller) {
+module.exports = (controller:SlackController) => {
 
     /* Collect some very simple runtime stats for use in the uptime/debug command */
     var stats = {
@@ -62,14 +53,6 @@ module.exports = function (controller) {
         }
     });
 
-
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-    /* Utility function to format uptime */
     function formatUptime(uptime) {
         var unit = 'second';
         if (uptime > 60) {

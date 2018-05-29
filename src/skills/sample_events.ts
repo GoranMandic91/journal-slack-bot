@@ -1,4 +1,6 @@
-module.exports = (controller) => {
+import { SlackController } from "botkit";
+
+module.exports = (controller:SlackController) => {
 
     controller.on('user_channel_join,user_group_join', (bot, message) => {
         bot.api.users.info({ user: message.user }, (error, response) => {

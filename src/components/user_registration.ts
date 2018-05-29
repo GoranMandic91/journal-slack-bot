@@ -1,15 +1,15 @@
 var debug = require('debug')('botkit:user_registration');
 
-module.exports = function(controller) {
+module.exports = (controller) => {
 
     /* Handle event caused by a user logging in with oauth */
-    controller.on('oauth:success', function(payload) {
+    controller.on('oauth:success', (payload) => {
 
         debug('Got a successful login!', payload);
         if (!payload.identity.team_id) {
             debug('Error: received an oauth response without a team id', payload);
         }
-        controller.storage.teams.get(payload.identity.team_id, function(err, team) {
+        controller.storage.teams.get(payload.identity.team_id, (err, team) => {
             if (err) {
                 debug('Error: could not load team from storage system:', payload.identity.team_id, err);
             }
@@ -22,7 +22,7 @@ module.exports = function(controller) {
                     url: payload.identity.url,
                     name: payload.identity.team,
                 };
-                var new_team= true;
+                var new_team = true;
             }
 
             team.bot = {
@@ -34,7 +34,7 @@ module.exports = function(controller) {
 
             var testbot = controller.spawn(team.bot);
 
-            testbot.api.auth.test({}, function(err, bot_auth) {
+            testbot.api.auth.test({}, (err, bot_auth) => {
                 if (err) {
                     debug('Error: could not authenticate bot user', err);
                 } else {
@@ -50,7 +50,7 @@ module.exports = function(controller) {
 
                     // Replace this with your own database!
 
-                    controller.storage.teams.save(team, function(err, id) {
+                    controller.storage.teams.save(team, (err, id) => {
                         if (err) {
                             debug('Error: could not save team record:', err);
                         } else {
@@ -67,7 +67,7 @@ module.exports = function(controller) {
     });
 
 
-    controller.on('create_team', function(bot, team) {
+    controller.on('create_team', (bot, team) => {
 
         debug('Team created:', team);
 
@@ -80,7 +80,7 @@ module.exports = function(controller) {
     });
 
 
-    controller.on('update_team', function(bot, team) {
+    controller.on('update_team', (bot, team) => {
 
         debug('Team updated:', team);
         // Trigger an event that will establish an RTM connection for this bot
