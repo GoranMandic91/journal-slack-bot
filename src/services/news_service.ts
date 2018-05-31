@@ -1,4 +1,5 @@
 import * as rp from 'request-promise';
+import { News } from '../models/news';
 const newsApi = 'https://newsapi.org/v2/';
 const newsApiKey = "c97755a57d604ed4b373a02350980f3f";
 
@@ -6,7 +7,7 @@ export class NewsService {
 
     constructor() { }
 
-    get(query: string): Promise<any> {
+    get(query: string): Promise<News[]> {
         const url = `https://newsapi.org/v2/top-headlines?country=${query}&pageSize=2&apiKey=${newsApiKey}`
         const options = {
             method: "GET",
