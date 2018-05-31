@@ -2,12 +2,12 @@ import { SlackController } from "botkit";
 
 module.exports = (controller: SlackController) => {
 
-    controller.hears(['color'], 'direct_message,direct_mention', function (bot, message) {
+    controller.hears(['color'], 'direct_message,direct_mention', (bot, message) => {
 
-        bot.startConversation(message, function (err, convo) {
+        bot.startConversation(message, (err, convo) => {
             convo.say('This is an example of using convo.ask with a single callback.');
 
-            convo.ask('What is your favorite color?', function (response, convo) {
+            convo.ask('What is your favorite color?', (response, convo) => {
 
                 convo.say('Cool, I like ' + response.text + ' too!');
                 convo.next();
@@ -18,9 +18,9 @@ module.exports = (controller: SlackController) => {
     });
 
 
-    controller.hears(['proceed'], 'direct_message,direct_mention', function (bot, message) {
+    controller.hears(['proceed'], 'direct_message,direct_mention', (bot, message) => {
 
-        bot.startConversation(message, function (err, convo) {
+        bot.startConversation(message, (err, convo) => {
 
             let attachment = [{
                 title: 'Do you want to proceed?',
@@ -41,27 +41,27 @@ module.exports = (controller: SlackController) => {
                     }
                 ]
             }];
-            
+
             convo.ask({
                 attachments: attachment
             }, [
                     {
                         pattern: "yes",
-                        callback: function (reply, convo) {
+                        callback: (reply, convo) => {
                             convo.say('FABULOUS!');
                             convo.next();
                         }
                     },
                     {
                         pattern: "no",
-                        callback: function (reply, convo) {
+                        callback: (reply, convo) => {
                             convo.say('Too bad');
                             convo.next();
                         }
                     },
                     {
                         default: true,
-                        callback: function (reply, convo) {
+                        callback: (reply, convo) => {
                         }
                     }
                 ]);
@@ -69,9 +69,9 @@ module.exports = (controller: SlackController) => {
 
     });
 
-    controller.hears(['question'], 'direct_message,direct_mention', function (bot, message) {
+    controller.hears(['question'], 'direct_message,direct_mention', (bot, message) => {
 
-        bot.createConversation(message, function (err, convo) {
+        bot.createConversation(message, (err, convo) => {
 
             // create a path for when a user says YES
             convo.addMessage({
@@ -96,19 +96,19 @@ module.exports = (controller: SlackController) => {
             convo.ask('Do you like cheese?', [
                 {
                     pattern: bot.utterances.yes,
-                    callback: function (response, convo) {
+                    callback: (response, convo) => {
                         convo.gotoThread('yes_thread');
                     },
                 },
                 {
                     pattern: bot.utterances.no,
-                    callback: function (response, convo) {
+                    callback: (response, convo) => {
                         convo.gotoThread('no_thread');
                     },
                 },
                 {
                     default: true,
-                    callback: function (response, convo) {
+                    callback: (response, convo) => {
                         convo.gotoThread('bad_response');
                     },
                 }
@@ -117,7 +117,7 @@ module.exports = (controller: SlackController) => {
             convo.activate();
 
             // capture the results of the conversation and see what happened...
-            convo.on('end', function (convo) {
+            convo.on('end', (convo) => {
 
                 if (convo.status === 'completed') {
                     // this still works to send individual replies...

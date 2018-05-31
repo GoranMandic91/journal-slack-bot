@@ -1,12 +1,12 @@
 var debug = require('debug')('botkit:oauth');
 
-module.exports = function(webserver, controller) {
+module.exports = (webserver, controller) => {
 
     var handler = {
-        login: function(req, res) {
+        login: (req, res) => {
             res.redirect(controller.getAuthorizeURL());
         },
-        oauth: function(req, res) {
+        oauth: (req, res) => {
             var code = req.query.code;
             var state = req.query.state;
 
@@ -19,7 +19,7 @@ module.exports = function(webserver, controller) {
                 code: code
             };
 
-            slackapi.api.oauth.access(opts, function(err, auth) {
+            slackapi.api.oauth.access(opts, (err, auth) => {
 
                 if (err) {
                     debug('Error confirming oauth', err);
@@ -32,7 +32,7 @@ module.exports = function(webserver, controller) {
                 // use the token we got from the oauth
                 // to call auth.test to make sure the token is valid
                 // but also so that we reliably have the team_id field!
-                slackapi.api.auth.test({token: auth.access_token}, function(err, identity) {
+                slackapi.api.auth.test({ token: auth.access_token }, (err, identity) => {
 
                     if (err) {
                         debug('Error fetching user identity', err);

@@ -9,7 +9,7 @@ module.exports = (controller: SlackController) => {
             convo.addMessage({
                 text: 'I\'m getting all users, please wait for a second :simple_smile:',
                 action: 'get-all-users'
-            },'');
+            }, '');
 
             convo.addMessage({
                 text: 'Here you go :man-tipping-hand::skin-tone-2:'

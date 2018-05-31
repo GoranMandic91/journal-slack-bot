@@ -1,28 +1,28 @@
 var debug = require('debug')('botkit:rtm_manager');
 
-module.exports = function(controller) {
+module.exports = (controller) => {
 
     var managed_bots = {};
 
     // Capture the rtm:start event and actually start the RTM...
-    controller.on('rtm:start', function(config) {
+    controller.on('rtm:start', (config) => {
         var bot = controller.spawn(config);
         manager.start(bot);
     });
 
     //
-    controller.on('rtm_close', function(bot) {
+    controller.on('rtm_close', (bot) => {
         manager.remove(bot);
     });
 
     // The manager object exposes some useful tools for managing the RTM
     var manager = {
-        start: function(bot) {
+        start: (bot) => {
 
             if (managed_bots[bot.config.token]) {
                 debug('Start RTM: already online');
             } else {
-                bot.startRTM(function(err, bot) {
+                bot.startRTM((err, bot) => {
                     if (err) {
                         debug('Error starting RTM:', err);
                     } else {
@@ -32,7 +32,7 @@ module.exports = function(controller) {
                 });
             }
         },
-        stop: function(bot) {
+        stop: (bot) => {
             if (managed_bots[bot.config.token]) {
                 if (managed_bots[bot.config.token].rtm) {
                     debug('Stop RTM: Stopping bot');
@@ -40,14 +40,14 @@ module.exports = function(controller) {
                 }
             }
         },
-        remove: function(bot) {
+        remove: (bot) => {
             debug('Removing bot from manager');
             delete managed_bots[bot.config.token];
         },
-        reconnect: function() {
+        reconnect: () => {
 
             debug('Reconnecting all existing bots...');
-            controller.storage.teams.all(function(err, list) {
+            controller.storage.teams.all((err, list) => {
 
                 if (err) {
                     throw new Error('Error: Could not load existing bots:' + err);

@@ -1,3 +1,4 @@
 {
     "tslint.enable": true, 
+    "editor.formatOnSave": true
 }

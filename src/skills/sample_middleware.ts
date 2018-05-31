@@ -2,7 +2,7 @@ import { SlackController } from "botkit";
 
 module.exports = (controller: SlackController) => {
 
-    // controller.middleware.receive.use(function(bot, message, next) {
+    // controller.middleware.receive.use((bot, message, next)=> {
     //
     //     // do something...
     //     console.log('RCVD:', message);
@@ -11,7 +11,7 @@ module.exports = (controller: SlackController) => {
     // });
     //
     //
-    // controller.middleware.send.use(function(bot, message, next) {
+    // controller.middleware.send.use((bot, message, next)=> {
     //
     //     // do something...
     //     console.log('SEND:', message);

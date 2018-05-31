@@ -37,7 +37,7 @@ controller.startTicking();
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + '/dist/components/express_webserver.js')(controller);
 
-webserver.get('/', function (req, res) {
+webserver.get('/', (req, res) => {
   res.render('index', {
     domain: req.get('host'),
     protocol: req.protocol,
@@ -53,8 +53,8 @@ require(__dirname + '/dist/components/onboarding.js')(controller);
 
 
 var normalizedPath = require("path").join(__dirname, "dist/skills");
-require("fs").readdirSync(normalizedPath).forEach(function (file) {
-  if( file.indexOf("js.map") === -1){
+require("fs").readdirSync(normalizedPath).forEach((file) => {
+  if (file.indexOf("js.map") === -1) {
     require("./dist/skills/" + file)(controller);
   }
 });
