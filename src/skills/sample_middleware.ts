@@ -1,4 +1,4 @@
-import { SlackController } from "botkit";
+import { SlackController } from 'botkit';
 
 module.exports = (controller: SlackController) => {
 
@@ -18,4 +18,4 @@ module.exports = (controller: SlackController) => {
     //     next();
     //
     // });
-}
+};

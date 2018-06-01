@@ -1,4 +1,4 @@
-import { SlackController } from "botkit";
+import { SlackController } from 'botkit';
 
 module.exports = (controller: SlackController) => {
 
@@ -7,6 +7,7 @@ module.exports = (controller: SlackController) => {
         bot.startConversation(message, (err, convo) => {
             convo.say('This is an example of using convo.ask with a single callback.');
 
+            // tslint:disable-next-line:no-shadowed-variable
             convo.ask('What is your favorite color?', (response, convo) => {
 
                 convo.say('Cool, I like ' + response.text + ' too!');
@@ -17,53 +18,52 @@ module.exports = (controller: SlackController) => {
 
     });
 
-
     controller.hears(['proceed'], 'direct_message,direct_mention', (bot, message) => {
 
         bot.startConversation(message, (err, convo) => {
 
-            let attachment = [{
+            const attachment = [{
                 title: 'Do you want to proceed?',
                 callback_id: '123',
                 attachment_type: 'default',
                 actions: [
                     {
-                        "name": "say",
-                        "text": "Yes",
-                        "value": "yes",
-                        "type": "button",
+                        name: 'say',
+                        text: 'Yes',
+                        value: 'yes',
+                        type: 'button',
                     },
                     {
-                        "name": "say",
-                        "text": "No",
-                        "value": "no",
-                        "type": "button",
-                    }
-                ]
+                        name: 'say',
+                        text: 'No',
+                        value: 'no',
+                        type: 'button',
+                    },
+                ],
             }];
 
             convo.ask({
-                attachments: attachment
+                attachments: attachment,
             }, [
                     {
-                        pattern: "yes",
+                        pattern: 'yes',
                         callback: (reply, convo) => {
                             convo.say('FABULOUS!');
                             convo.next();
-                        }
+                        },
                     },
                     {
-                        pattern: "no",
+                        pattern: 'no',
                         callback: (reply, convo) => {
                             convo.say('Too bad');
                             convo.next();
-                        }
+                        },
                     },
                     {
                         default: true,
                         callback: (reply, convo) => {
-                        }
-                    }
+                        },
+                    },
                 ]);
         });
 

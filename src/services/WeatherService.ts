@@ -1,8 +1,8 @@
 import * as rp from 'request-promise';
-import { Weather } from '../models/weather';
+import { IWeather } from '../models/weather';
 
 const weatherApi = 'https://api.darksky.net/forecast';
-const weatherApiKey = "00979ce26509f1f656df89fcb8282edf";
+const weatherApiKey = '00979ce26509f1f656df89fcb8282edf';
 const weatherIconUrl = 'https://uds-static.api.aero/weather/icon/lg/';
 
 enum WeatherIcons {
@@ -20,25 +20,22 @@ enum WeatherIcons {
 
 export class WeatherService {
 
-    constructor() { }
-
-    get(): Promise<Weather> {
+    public get(): Promise<IWeather> {
         const url = `${weatherApi}/${weatherApiKey}/44.80401,20.46513?units=si`;
         const options = {
-            method: "GET",
+            method: 'GET',
             uri: url,
-            json: true
-        }
+            json: true,
+        };
         return rp(options)
-            .then(response => {
+            .then((response) => {
                 return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
-            })
+            });
     }
 
-    getIconUrl(icon: string): string {
+    public getIconUrl(icon: string): string {
         return weatherIconUrl + WeatherIcons[icon];
     }
-
 
 }
 

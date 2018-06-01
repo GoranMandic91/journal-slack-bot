@@ -2,12 +2,28 @@
     "extends": "tslint:recommended",
     "rules": {
         "object-literal-sort-keys": false,
-        "ordered-imports": [false],
-        "max-line-length": [false],
+        "ordered-imports": [
+            false
+        ],
+        "max-line-length": [
+            false
+        ],
         "triple-equals": true,
-        "no-console": [false],
+        "no-console": [
+            false
+        ],
         "prefer-for-of": false,
-        "max-classes-per-file": [false],
-        "object-literal-shorthand": false
+        "max-classes-per-file": [
+            false
+        ],
+        "object-literal-shorthand": false,
+        "quotemark": [
+            true,
+            "single",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        // "no-shadowed-variable": false,
     }
 }

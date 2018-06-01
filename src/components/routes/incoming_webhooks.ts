@@ -1,8 +1,8 @@
-var debug = require("debug")("botkit:incoming_webhooks");
+var debug = require('debug')('botkit:incoming_webhooks');
 
 module.exports = (webserver, controller) => {
-  debug("Configured /slack/receive url");
-  webserver.post("/slack/receive", (req, res) => {
+  debug('Configured /slack/receive url');
+  webserver.post('/slack/receive', (req, res) => {
     // NOTE: we should enforce the token check here
     res.status(200);
 

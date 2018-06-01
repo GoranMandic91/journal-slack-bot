@@ -1,5 +1,5 @@
-import { SlackController } from "botkit";
-import { SlackUser } from "../models/slack_user";
+import { SlackController } from 'botkit';
+import { ISlackUser } from '../models/SlackUser';
 
 module.exports = (controller: SlackController) => {
 
@@ -9,14 +9,14 @@ module.exports = (controller: SlackController) => {
     controller.hears(['tasks', 'todo'], 'direct_message', (bot, message) => {
 
         // load user from storage...
-        controller.storage.users.get(message.user, (err, user: SlackUser) => {
+        controller.storage.users.get(message.user, (err, user: ISlackUser) => {
 
             // user object can contain arbitary keys. we will store tasks in .tasks
-            if (!user || !user.tasks || user.tasks.length == 0) {
+            if (!user || !user.tasks || user.tasks.length === 0) {
                 bot.reply(message, 'There are no tasks on your list. Say `add _task_` to add something.');
             } else {
 
-                var text = 'Here are your current tasks: \n' +
+                const text = 'Here are your current tasks: \n' +
                     generateTaskList(user) +
                     'Reply with `done _number_` to mark a task completed.';
 
@@ -28,24 +28,24 @@ module.exports = (controller: SlackController) => {
 
     });
 
-    // listen for a user saying "add <something>", and then add it to the user's list
+    // listen for a user saying 'add <something>', and then add it to the user's list
     // store the new list in the storage system
     controller.hears(['add (.*)'], 'direct_message,direct_mention,mention', (bot, message) => {
 
-        var newtask = message.match[1];
-        controller.storage.users.get(message.user, (err, user: SlackUser) => {
+        const newtask = message.match[1];
+        controller.storage.users.get(message.user, (err, user: ISlackUser) => {
 
             if (!user) {
                 user = {
                     id: message.user,
                     name: `<@${message.user}>`,
-                    tasks: []
+                    tasks: [],
                 };
             }
 
             user.tasks.push(newtask);
 
-            controller.storage.users.save(user, (err, saved) => {
+            controller.storage.users.save(user, (saved) => {
 
                 if (err) {
                     bot.reply(message, 'I experienced an error adding your task: ' + err);
@@ -53,8 +53,8 @@ module.exports = (controller: SlackController) => {
                     bot.api.reactions.add({
                         name: 'thumbsup',
                         channel: message.channel,
-                        timestamp: message.ts
-                    }, () => { });
+                        timestamp: message.ts,
+                    }, () => { console.log(''); });
                 }
 
             });
@@ -62,19 +62,19 @@ module.exports = (controller: SlackController) => {
 
     });
 
-    // listen for a user saying "done <number>" and mark that item as done.
+    // listen for a user saying 'done <number>' and mark that item as done.
     controller.hears(['done (.*)'], 'direct_message', (bot, message) => {
 
-        var number = +message.match[1];
+        let numbers = +message.match[1];
 
-        if (isNaN(number)) {
+        if (isNaN(numbers)) {
             bot.reply(message, 'Please specify a number.');
         } else {
 
             // adjust for 0-based array index
-            number = number - 1;
+            numbers = numbers - 1;
 
-            controller.storage.users.get(message.user, (err, user: SlackUser) => {
+            controller.storage.users.get(message.user, (err, user: ISlackUser) => {
 
                 if (!user) {
                     user = {
@@ -84,11 +84,11 @@ module.exports = (controller: SlackController) => {
 
                 }
 
-                if (number < 0 || number >= user.tasks.length) {
+                if (numbers < 0 || numbers >= user.tasks.length) {
                     bot.reply(message, 'Sorry, your input is out of range. Right now there are ' + user.tasks.length + ' items on your list.');
                 } else {
 
-                    var item = user.tasks.splice(number, 1);
+                    const item = user.tasks.splice(numbers, 1);
 
                     // reply with a strikethrough message...
                     bot.reply(message, '~' + item + '~');
@@ -108,13 +108,13 @@ module.exports = (controller: SlackController) => {
     // it can be used in various places
     function generateTaskList(user) {
 
-        var text = '';
+        let text = '';
 
-        for (var t = 0; t < user.tasks.length; t++) {
+        for (let t = 0; t < user.tasks.length; t++) {
             text = text + '> `' + (t + 1) + '`) ' + user.tasks[t] + '\n';
         }
 
         return text;
 
     }
-}
+};
