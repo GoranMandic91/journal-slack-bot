@@ -8,7 +8,7 @@ export class NewsService {
     constructor() { }
 
     get(query: string): Promise<News[]> {
-        const url = `https://newsapi.org/v2/top-headlines?country=${query}&pageSize=2&apiKey=${newsApiKey}`
+        const url = `https://newsapi.org/v2/top-headlines?country=${query}&pageSize=5&apiKey=${newsApiKey}`
         const options = {
             method: "GET",
             uri: url,
