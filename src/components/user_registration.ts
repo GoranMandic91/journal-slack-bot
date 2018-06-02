@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-keyword
 var debug = require('debug')('botkit:user_registration');
 
 module.exports = (controller) => {
@@ -14,7 +15,7 @@ module.exports = (controller) => {
                 debug('Error: could not load team from storage system:', payload.identity.team_id, err);
             }
 
-            var new_team = false;
+            let newTeam = false;
             if (!team) {
                 team = {
                     id: payload.identity.team_id,
@@ -22,7 +23,7 @@ module.exports = (controller) => {
                     url: payload.identity.url,
                     name: payload.identity.team,
                 };
-                var new_team = true;
+                newTeam = true;
             }
 
             team.bot = {
@@ -32,7 +33,7 @@ module.exports = (controller) => {
                 app_token: payload.access_token,
             };
 
-            var testbot = controller.spawn(team.bot);
+            const testbot = controller.spawn(team.bot);
 
             testbot.api.auth.test({}, (err, bot_auth) => {
                 if (err) {
@@ -54,7 +55,7 @@ module.exports = (controller) => {
                         if (err) {
                             debug('Error: could not save team record:', err);
                         } else {
-                            if (new_team) {
+                            if (newTeam) {
                                 controller.trigger('create_team', [testbot, team]);
                             } else {
                                 controller.trigger('update_team', [testbot, team]);
@@ -65,7 +66,6 @@ module.exports = (controller) => {
             });
         });
     });
-
 
     controller.on('create_team', (bot, team) => {
 
@@ -79,7 +79,6 @@ module.exports = (controller) => {
 
     });
 
-
     controller.on('update_team', (bot, team) => {
 
         debug('Team updated:', team);
@@ -88,4 +87,4 @@ module.exports = (controller) => {
 
     });
 
-}
+};

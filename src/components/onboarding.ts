@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-keyword
 var debug = require('debug')('botkit:onboarding');
 
 module.exports = (controller) => {
@@ -5,7 +6,6 @@ module.exports = (controller) => {
     controller.on('onboard', (bot) => {
 
         debug('Starting an onboarding experience!');
-
 
         bot.startPrivateConversation({ user: bot.config.createdBy }, (err, convo) => {
             if (err) {
@@ -15,6 +15,6 @@ module.exports = (controller) => {
                 convo.say('You must now /invite me to a channel so that I can be of use!');
             }
         });
-    })
+    });
 
-}
+};

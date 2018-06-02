@@ -62,6 +62,7 @@ module.exports = (controller: SlackController) => {
                     {
                         default: true,
                         callback: (reply, convo) => {
+                            convo.say('Unsupported answer');
                         },
                     },
                 ]);
@@ -111,7 +112,7 @@ module.exports = (controller: SlackController) => {
                     callback: (response, convo) => {
                         convo.gotoThread('bad_response');
                     },
-                }
+                },
             ]);
 
             convo.activate();

@@ -1,5 +1,5 @@
 import { SlackController } from 'botkit';
-let debug = require('debug')('botkit:channel_join');
+const debug = require('debug')('botkit:channel_join');
 
 module.exports = (controller: SlackController) => {
 
@@ -9,4 +9,4 @@ module.exports = (controller: SlackController) => {
 
     });
 
-}
+};

@@ -1,26 +1,27 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var querystring = require('querystring');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const querystring = require('querystring');
+// tslint:disable-next-line:no-var-keyword
 var debug = require('debug')('botkit:webserver');
-var http = require('http');
+const http = require('http');
 
 module.exports = (controller) => {
 
-    var webserver = express();
+    const webserver = express();
     webserver.use(cookieParser());
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({ extended: true }));
 
     // import express middlewares that are present in /components/express_middleware
-    // var normalizedPath = require("path").join(__dirname, "express_middleware");
-    // require("fs").readdirSync(normalizedPath).forEach(function(file) {
-    // require("./express_middleware/" + file)(webserver, controller);
+    // var normalizedPath = require('path').join(__dirname, 'express_middleware');
+    // require('fs').readdirSync(normalizedPath).forEach(function(file) {
+    // require('./express_middleware/' + file)(webserver, controller);
     // });
 
     webserver.use(express.static('public'));
 
-    var server = http.createServer(webserver);
+    const server = http.createServer(webserver);
 
     server.listen(process.env.PORT || 3000, null, () => {
 
@@ -28,10 +29,10 @@ module.exports = (controller) => {
     });
 
     // import all the pre-defined routes that are present in /components/routes
-    var normalizedPath = require("path").join(__dirname, "routes");
-    require("fs").readdirSync(normalizedPath).forEach((file) => {
-        if (file.indexOf("js.map") === -1) {
-            require("./routes/" + file)(webserver, controller);
+    const normalizedPath = require('path').join(__dirname, 'routes');
+    require('fs').readdirSync(normalizedPath).forEach((file) => {
+        if (file.indexOf('js.map') === -1) {
+            require('./routes/' + file)(webserver, controller);
         }
     });
 
@@ -40,4 +41,4 @@ module.exports = (controller) => {
 
     return webserver;
 
-}
+};

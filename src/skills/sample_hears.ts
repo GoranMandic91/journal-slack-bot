@@ -25,12 +25,12 @@ module.exports = (controller: SlackController) => {
         convo.setVar('triggers', stats.triggers);
 
         convo.say(
-          'My main process has been online for {{vars.uptime}}. Since booting, I have heard {{vars.triggers}} triggers, and conducted {{vars.convos}} conversations.',
+          'My main process has been online for {{vars.uptime}}. Since booting, I have heard {{vars.triggers}} triggers, and conducted {{vars.convos}} conversations.'
         );
         convo.activate();
       }
     });
-  },
+  }
   );
 
   controller.hears(['^say (.*)', '^say'], 'direct_message,direct_mention', (bot, message) => {
@@ -40,7 +40,7 @@ module.exports = (controller: SlackController) => {
           if (user && user.name) {
             bot.reply(
               message,
-              'Hello ' + user.name + '!' + 'Here you go:' + message.match[1],
+              'Hello ' + user.name + '!' + 'Here you go:' + message.match[1]
             );
           } else {
             bot.reply(message, 'Hello.' + ' Here you go:' + message.match[1]);
@@ -52,7 +52,7 @@ module.exports = (controller: SlackController) => {
     } else {
       bot.reply(message, 'I will repeat whatever you say.');
     }
-  },
+  }
   );
 
   function formatUptime(uptime) {

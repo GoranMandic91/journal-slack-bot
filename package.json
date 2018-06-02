@@ -4,12 +4,13 @@
   "description": "Simple Journal Slack bot implemented with Botkit framework",
   "main": "bot.js",
   "scripts": {
+    "postinstall": "tsc",
+    "localtunnel": "lt --subdomain myjournalslackbot --port 3030",
     "clean": "rimraf dist",
     "lint": "tslint --force --format  verbose \"src/**/**/*.ts\"",
     "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
     "watch": "npm run build -- --watch",
-    "start": "concurrently --kill-others \"tsc \" \"nodemon --inspect=9230 ./dist/bot.js\"",
-    "localtunnel": "lt --subdomain journalslackbot --port 3030"
+    "start": "concurrently --kill-others \"tsc -w\" \"nodemon --inspect=9230 ./dist/bot.js\""
   },
   "dependencies": {
     "@types/node": "^9.6.6",
@@ -22,12 +23,12 @@
     "node-env-file": "^0.1.8",
     "querystring": "^0.2.0",
     "request-promise": "^4.2.2",
-    "rimraf": "^2.6.1",
-    "tslint": "^5.10.0",
     "typescript": "^2.8.3",
     "wordfilter": "^0.2.6"
   },
   "devDependencies": {
+    "rimraf": "^2.6.1",
+    "tslint": "^5.10.0",
     "concurrently": "^3.5.1",
     "nodemon": "^1.17.4"
   },

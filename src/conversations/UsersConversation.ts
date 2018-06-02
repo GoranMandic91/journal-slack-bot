@@ -9,7 +9,7 @@ export class UsersConversation {
         this.configure();
     }
 
-    configure() {
+    public configure() {
 
         this.controller.hears(['get users'], 'direct_message', (bot, message) => {
 
@@ -17,22 +17,22 @@ export class UsersConversation {
 
                 convo.addMessage({
                     text: 'I\'m getting all users, please wait for a second :simple_smile:',
-                    action: 'get-all-users'
+                    action: 'get-all-users',
                 }, '');
 
                 convo.addMessage({
-                    text: 'Here you go :man-tipping-hand::skin-tone-2:'
+                    text: 'Here you go :man-tipping-hand::skin-tone-2:',
                 }, 'end-conversation');
 
                 bot.api.users.list({}, (error, response) => {
 
-                    let currentDate = Date.now() / 1000;
+                    const currentDate = Date.now() / 1000;
 
-                    let members = response.members.filter((member) => {
+                    const members = response.members.filter((member) => {
                         return !member.is_bot && member.id !== 'USLACKBOT';
                     });
 
-                    let attachments = members.map(member => {
+                    const attachments = members.map((member) => {
                         return {
                             author_name: member.real_name,
                             author_icon: member.profile.image_24,
@@ -40,31 +40,31 @@ export class UsersConversation {
                             color: member.color,
                             fields: [
                                 {
-                                    title: "e-mail",
+                                    title: 'e-mail',
                                     value: member.profile.email,
-                                    short: false
+                                    short: false,
                                 },
                                 {
-                                    title: "username",
+                                    title: 'username',
                                     value: '<@' + member.id + '>',
-                                    short: false
-                                }
+                                    short: false,
+                                },
                             ],
-                            footer: "Journal Bot",
-                            footer_icon: "https://platform.slack-edge.com/img/default_application_icon.png",
+                            footer: 'Journal Bot',
+                            footer_icon: 'https://platform.slack-edge.com/img/default_application_icon.png',
                             ts: currentDate,
-                        }
-                    })
+                        };
+                    });
 
                     convo.addMessage({
-                        attachments: attachments,
-                        action: 'end-conversation'
+                        attachments,
+                        action: 'end-conversation',
                     }, 'get-all-users');
-                })
+                });
 
                 convo.activate();
 
-            })
+            });
         });
     }
 }

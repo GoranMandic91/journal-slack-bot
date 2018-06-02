@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-keyword
 var debug = require('debug')('botkit:incoming_webhooks');
 
 module.exports = (webserver, controller) => {

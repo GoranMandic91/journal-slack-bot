@@ -1,12 +1,13 @@
+// tslint:disable-next-line:no-var-keyword
 var debug = require('debug')('botkit:rtm_manager');
 
 module.exports = (controller) => {
 
-    var managed_bots = {};
+    const managed_bots = {};
 
     // Capture the rtm:start event and actually start the RTM...
     controller.on('rtm:start', (config) => {
-        var bot = controller.spawn(config);
+        const bot = controller.spawn(config);
         manager.start(bot);
     });
 
@@ -16,7 +17,7 @@ module.exports = (controller) => {
     });
 
     // The manager object exposes some useful tools for managing the RTM
-    var manager = {
+    const manager = {
         start: (bot) => {
 
             if (managed_bots[bot.config.token]) {
@@ -36,7 +37,7 @@ module.exports = (controller) => {
             if (managed_bots[bot.config.token]) {
                 if (managed_bots[bot.config.token].rtm) {
                     debug('Stop RTM: Stopping bot');
-                    managed_bots[bot.config.token].closeRTM()
+                    managed_bots[bot.config.token].closeRTM();
                 }
             }
         },
@@ -52,17 +53,16 @@ module.exports = (controller) => {
                 if (err) {
                     throw new Error('Error: Could not load existing bots:' + err);
                 } else {
-                    for (var l = 0; l < list.length; l++) {
+                    for (let l = 0; l < list.length; l++) {
                         manager.start(controller.spawn(list[l].bot));
                     }
                 }
 
             });
 
-        }
-    }
-
+        },
+    };
 
     return manager;
 
-}
+};
