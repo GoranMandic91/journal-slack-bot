@@ -1,9 +1,20 @@
+import { Onboarding } from './components/Onboarding';
+import { SampleMiddleware } from './middlewares/SampleMiddleware';
+import { SampleHearsSkill } from './skills/SampleHearsSkill';
+import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
 import { UsersConversation } from './conversations/UsersConversation';
 import { JournalConversation } from './conversations/JournalConversation';
 import { WeatherConversation } from './conversations/WeatherConversation';
 import { NewsConversation } from './conversations/NewsConversation';
+import { SampleConversationSkill } from './skills/SampleConversationSkill';
+import { SampleTaskbotSkill } from './skills/SampleTaskbotSkill';
+import { SampleEventsSkill } from './skills/SampleEventsSkill';
+import * as Botkit from 'botkit';
+import * as mongoDB from 'botkit-storage-mongo';
+import * as env from 'node-env-file';
+import * as debug from 'debug';
+debug('botkit:main');
 
-const env = require('node-env-file');
 if (process.env.NODE_ENV !== 'production') {
   env('./.env');
 }
@@ -12,17 +23,12 @@ if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
   usage_tip();
 }
 
-const Botkit = require('botkit');
-const debug = require('debug')('botkit:main');
-
-const mongoStorage = require('botkit-storage-mongo')({ mongoUri: process.env.MONGODB_URI });
-
 const botOptions = {
   clientId: process.env.clientId,
   clientSecret: process.env.clientSecret,
-  debug: true,
+  debug: process.env.NODE_ENV !== 'production' ? true : false,
   scopes: ['bot'],
-  storage: mongoStorage,
+  storage: mongoDB({ mongoUri: process.env.MONGODB_URI }),
 };
 
 // Create the Botkit controller, which controls all instances of the bot.
@@ -45,21 +51,28 @@ webserver.get('/', (req, res) => {
 require(__dirname + '/components/user_registration.js')(controller);
 
 // Send an onboarding message when a new team joins
-require(__dirname + '/components/onboarding.js')(controller);
+const onboarding = new Onboarding(controller);
 
-const normalizedPath = require('path').join(__dirname, 'skills');
-require('fs').readdirSync(normalizedPath).forEach((file) => {
-  if (file.indexOf('js.map') === -1) {
-    require('./skills/' + file)(controller);
-  }
-});
+// const normalizedPath = require('path').join(__dirname, 'skills');
+// require('fs').readdirSync(normalizedPath).forEach((file) => {
+//   if (file.indexOf('js.map') === -1) {
+//     require('./skills/' + file)(controller);
+//   }
+// });
 
 const newsConversation = new NewsConversation(controller);
 const weatherConversation = new WeatherConversation(controller);
 const journalConversation = new JournalConversation(controller);
 const usersConversation = new UsersConversation(controller);
 
-console.log('~~~~~~~~~~');
+const channelJoinSkill = new ChannelJoinSkill(controller);
+const sampleConversationSkill = new SampleConversationSkill(controller);
+const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
+const sampleEventsSkill = new SampleEventsSkill(controller);
+const sampleHearsSkill = new SampleHearsSkill(controller);
+
+const sampleMiddleware = new SampleMiddleware(controller);
+
 console.log('Journal Slack bot started!');
 
 function usage_tip() {

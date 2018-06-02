@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "postinstall": "tsc",
-    "localtunnel": "lt --subdomain myjournalslackbot --port 3030",
+    "localtunnel": "lt --subdomain my-journalslackbott --port 3030",
     "clean": "rimraf dist",
     "lint": "tslint --force --format  verbose \"src/**/**/*.ts\"",
     "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
@@ -21,6 +21,7 @@
     "debug": "^2.3.3",
     "express": "^4.14.0",
     "node-env-file": "^0.1.8",
+    "prettyjson": "^1.2.1",
     "querystring": "^0.2.0",
     "request-promise": "^4.2.2",
     "typescript": "^2.8.3",
