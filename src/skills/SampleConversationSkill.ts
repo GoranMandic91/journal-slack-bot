@@ -1,5 +1,6 @@
 import { SlackController } from 'botkit';
-const debug = require('debug')('botkit:channel_join');
+import * as debug from 'debug';
+debug('botkit:channel_join');
 
 export class SampleConversationSkill {
 

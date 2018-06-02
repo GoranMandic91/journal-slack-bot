@@ -1,3 +1,4 @@
+import { AppServer } from './components/AppServer';
 import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
 import { Onboarding } from './components/Onboarding';
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
@@ -39,19 +40,12 @@ const botOptions = {
 
 // Create the Botkit controller, which controls all instances of the bot.
 const controller = Botkit.slackbot(botOptions);
-
 controller.startTicking();
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
-const webserver = require(__dirname + '/components/express_webserver.js')(controller);
+const server = new AppServer(controller);
+server.home();
 
-webserver.get('/', (req, res) => {
-  res.render('index', {
-    domain: req.get('host'),
-    protocol: req.protocol,
-    layout: 'index.html',
-  });
-});
 // Set up a simple storage backend for keeping a record of customers
 // who sign up for the app via the oauth
 require(__dirname + '/components/user_registration.js')(controller);
