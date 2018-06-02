@@ -1,3 +1,4 @@
+import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
 import { Onboarding } from './components/Onboarding';
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
@@ -20,7 +21,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
-  usage_tip();
+  console.log('~~~~~~~~~~');
+  console.log('Journal Slack Bot');
+  console.log('Execute your bot application like this:');
+  console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 node bot.js');
+  console.log('Get Slack app credentials here: https://api.slack.com/apps');
+  console.log('~~~~~~~~~~');
 }
 
 const botOptions = {
@@ -53,33 +59,18 @@ require(__dirname + '/components/user_registration.js')(controller);
 // Send an onboarding message when a new team joins
 const onboarding = new Onboarding(controller);
 
-// const normalizedPath = require('path').join(__dirname, 'skills');
-// require('fs').readdirSync(normalizedPath).forEach((file) => {
-//   if (file.indexOf('js.map') === -1) {
-//     require('./skills/' + file)(controller);
-//   }
-// });
-
-const newsConversation = new NewsConversation(controller);
-const weatherConversation = new WeatherConversation(controller);
 const journalConversation = new JournalConversation(controller);
+const newsConversation = new NewsConversation(controller);
 const usersConversation = new UsersConversation(controller);
+const weatherConversation = new WeatherConversation(controller);
 
 const channelJoinSkill = new ChannelJoinSkill(controller);
+const interactiveMessageSkill = new InteractiveMessageSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
-const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
+const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
 
 const sampleMiddleware = new SampleMiddleware(controller);
 
 console.log('Journal Slack bot started!');
-
-function usage_tip() {
-  console.log('~~~~~~~~~~');
-  console.log('Journal Slack Bot');
-  console.log('Execute your bot application like this:');
-  console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 node bot.js');
-  console.log('Get Slack app credentials here: https://api.slack.com/apps');
-  console.log('~~~~~~~~~~');
-}
