@@ -1,7 +1,8 @@
+import { AppRegistration } from './components/AppRegistration';
 import { RtmManager } from './components/RtmManager';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
-import { Onboarding } from './components/Onboarding';
+import { WelcomeAboard } from './components/WelcomeAboard';
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
 import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
@@ -47,13 +48,13 @@ controller.startTicking();
 const server = new AppServer(controller);
 server.home();
 
-require(__dirname + '/components/user_registration.js')(controller);
+const appRegistration = new AppRegistration(controller);
 
 // uncomment next line if you want to use RTM
 // const rtmManager = new RtmManager(controller);
 
 // Send an onboarding message when a new team joins
-const onboarding = new Onboarding(controller);
+const welcomeAboard = new WelcomeAboard(controller);
 
 const journalConversation = new JournalConversation(controller);
 const newsConversation = new NewsConversation(controller);

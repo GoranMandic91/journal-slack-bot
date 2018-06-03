@@ -1,5 +1,5 @@
 import { SlackController } from 'botkit';
-import { ISlackMessage } from '../models/SlackUser';
+import { ISlackMessage } from '../models/Slack';
 export class InteractiveMessageSkill {
 
     private controller: SlackController;

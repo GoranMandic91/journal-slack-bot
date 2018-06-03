@@ -1,5 +1,5 @@
 import { SlackController } from 'botkit';
-import { ISlackUser } from '../models/SlackUser';
+import { ISlackUser } from '../models/Slack';
 
 export class SampleTaskbotSkill {
 
@@ -54,7 +54,7 @@ export class SampleTaskbotSkill {
 
                 user.tasks.push(newtask);
 
-                this.controller.storage.users.save(user, (saved) => {
+                this.controller.storage.users.save(user, (err, saved) => {
 
                     if (err) {
                         bot.reply(message, 'I experienced an error adding your task: ' + err);

@@ -48,10 +48,10 @@ export class SampleHearsSkill {
             if (user && user.name) {
               bot.reply(
                 message,
-                'Hello ' + user.name + '!' + 'Here you go:' + message.match[1]
+                'Hello ' + user.name + '!' + ' Here you go: ' + message.match[1]
               );
             } else {
-              bot.reply(message, 'Hello.' + ' Here you go:' + message.match[1]);
+              bot.reply(message, 'Hello.' + ' Here you go: ' + message.match[1]);
             }
           });
         } else {
