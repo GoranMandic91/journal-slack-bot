@@ -1,3 +1,4 @@
+import { RtmManager } from './components/RtmManager';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
 import { Onboarding } from './components/Onboarding';
@@ -46,9 +47,10 @@ controller.startTicking();
 const server = new AppServer(controller);
 server.home();
 
-// Set up a simple storage backend for keeping a record of customers
-// who sign up for the app via the oauth
 require(__dirname + '/components/user_registration.js')(controller);
+
+// uncomment next line if you want to use RTM
+// const rtmManager = new RtmManager(controller);
 
 // Send an onboarding message when a new team joins
 const onboarding = new Onboarding(controller);
