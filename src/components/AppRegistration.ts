@@ -100,7 +100,6 @@ export class AppRegistration {
         //     // Trigger an event that will establish an RTM connection for this bot
         //     // this.controller.trigger('rtm:start', [bot.config]);
 
-
     }
 
     private updateTeamAndUsers(bot: ISlackBot, team: ISlackTeam) {
