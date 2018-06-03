@@ -91,6 +91,8 @@ export class AppRegistration {
                         this.controller.storage.users.save(member);
                     }
                 });
+                // Trigger an event that will cause this team to receive onboarding messages
+                this.controller.trigger('welcome', [bot, team]);
             }
         });
 
@@ -98,8 +100,7 @@ export class AppRegistration {
         //     // Trigger an event that will establish an RTM connection for this bot
         //     // this.controller.trigger('rtm:start', [bot.config]);
 
-        // Trigger an event that will cause this team to receive onboarding messages
-        this.controller.trigger('welcome', [bot, team]);
+
     }
 
     private updateTeamAndUsers(bot: ISlackBot, team: ISlackTeam) {
@@ -120,15 +121,15 @@ export class AppRegistration {
                         });
                     }
                 });
+                // Trigger an event that will cause this team to receive onboarding messages
+                this.controller.trigger('welcome', [bot, team]);
+
             }
         });
 
         //     debug('Team updated:', team);
         //     // Trigger an event that will establish an RTM connection for this bot
         //     // this.controller.trigger('rtm:start', [bot]);
-
-        // Trigger an event that will cause this team to receive onboarding messages
-        this.controller.trigger('welcome', [bot, team]);
 
     }
 }
