@@ -18,6 +18,7 @@ import * as Botkit from 'botkit';
 import * as mongoDB from 'botkit-storage-mongo';
 import * as env from 'node-env-file';
 import * as debug from 'debug';
+import { HelpSkill } from './skills/HelpSkill';
 debug('botkit:main');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -69,6 +70,7 @@ const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
 const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
+const helpSkill = new HelpSkill(controller);
 const defaultSkill = new DefaultSkill(controller);
 
 console.log('Journal Slack bot started!');
