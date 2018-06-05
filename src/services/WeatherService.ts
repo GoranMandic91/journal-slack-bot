@@ -33,8 +33,51 @@ export class WeatherService {
             });
     }
 
+    public getByLocationAndTime(lat: number, lng: number, date: any): Promise<IWeather> {
+        const unixtime = date.unix();
+        const url = `${weatherApi}/${weatherApiKey}/${lat},${lng},${unixtime}?units=si`;
+        const options = {
+            method: 'GET',
+            uri: url,
+            json: true,
+        };
+        return rp(options)
+            .then((response) => {
+                return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
+            });
+    }
+
     public getIconUrl(icon: string): string {
         return weatherIconUrl + WeatherIcons[icon];
+    }
+
+    public formatWeather(weather: IWeather, address: string) {
+        const attachments = [{
+            thumb_url: weatherService.getIconUrl(weather.icon),
+            color: '#F35A00',
+            fields: [
+                {
+                    title: 'Weather forcast for ' + address,
+                    value: weather.summary,
+                    short: false,
+                },
+                {
+                    title: 'Min temperature',
+                    value: weather.temperatureLow.toFixed(0) + ' °C',
+                    short: true,
+                },
+                {
+                    title: 'Max temperature',
+                    value: weather.temperatureHigh.toFixed(0) + ' °C',
+                    short: true,
+                },
+            ],
+            footer: `<https://darksky.net/forecast/${weather.latitude},${weather.longitude}/ca12/en| Dark Sky>`,
+            footer_icon: 'http://haverzine.com/wp-content/uploads/2014/01/Dark-Sky-logo-on-mevvy.com_.png',
+            ts: (weather.time).toString(),
+        }];
+
+        return attachments;
     }
 
 }

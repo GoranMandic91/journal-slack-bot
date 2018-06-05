@@ -11,7 +11,7 @@ export class DefaultSkill {
 
     public configure() {
 
-        this.controller.hears(['(.*)'], 'direct_message,direct_mention', (bot, message) => {
+        this.controller.hears(['(.*)'], 'direct_message', (bot, message) => {
             bot.createConversation(message, (err, convo) => {
                 if (!err) {
                     convo.say(

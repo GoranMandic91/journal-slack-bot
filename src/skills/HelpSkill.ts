@@ -11,7 +11,7 @@ export class HelpSkill {
 
     public configure() {
 
-        this.controller.hears(['help'], 'direct_message,direct_mention', (bot, message) => {
+        this.controller.hears(['help'], 'direct_message', (bot, message) => {
             bot.createConversation(message, (err, convo) => {
                 if (!err) {
                     convo.say(
