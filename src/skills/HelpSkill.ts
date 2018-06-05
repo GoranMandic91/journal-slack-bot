@@ -15,7 +15,7 @@ export class HelpSkill {
             bot.createConversation(message, (err, convo) => {
                 if (!err) {
                     convo.say(
-                        'Type: \n- `get news` for news :point_up::skin-tone-2: \n- `get weather` to get weather forecast :v::skin-tone-2: \n- `get both` to get news and weather forecast :crossed_fingers::skin-tone-2:'
+                        'Type: \n- `news` for news :point_up::skin-tone-2: \n- `weather` to get weather forecast :v::skin-tone-2: \n- `journal` to get news and weather forecast :crossed_fingers::skin-tone-2:'
                     );
                     convo.activate();
                 }

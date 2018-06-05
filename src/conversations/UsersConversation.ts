@@ -11,7 +11,7 @@ export class UsersConversation {
 
     public configure() {
 
-        this.controller.hears(['get users'], 'direct_message', (bot, message) => {
+        this.controller.hears(['users'], 'direct_message', (bot, message) => {
 
             bot.createConversation(message, (err, convo) => {
 

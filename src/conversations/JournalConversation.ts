@@ -14,7 +14,7 @@ export class JournalConversation {
 
     public configure() {
 
-        this.controller.hears(['get both'], 'direct_message', (bot, message) => {
+        this.controller.hears(['journal'], 'direct_message', (bot, message) => {
 
             bot.createConversation(message, async (err, convo) => {
 
@@ -60,16 +60,16 @@ export class JournalConversation {
                         },
                         {
                             title: 'Min temperature',
-                            value: weather.temperatureLow.toFixed(1) + ' °C',
+                            value: weather.temperatureLow.toFixed(0) + ' °C',
                             short: true,
                         },
                         {
                             title: 'Max temperature',
-                            value: weather.temperatureHigh.toFixed(1) + ' °C',
+                            value: weather.temperatureHigh.toFixed(0) + ' °C',
                             short: true,
                         },
                     ],
-                    footer: `<https://darksky.net/forecast/${weather.latitude},${weather.longitude}| Dark Sky>`,
+                    footer: `<https://darksky.net/forecast/${weather.latitude},${weather.longitude}/ca12/en| Dark Sky>`,
                     footer_icon: 'http://haverzine.com/wp-content/uploads/2014/01/Dark-Sky-logo-on-mevvy.com_.png',
                     ts: (weather.time).toString(),
                 });

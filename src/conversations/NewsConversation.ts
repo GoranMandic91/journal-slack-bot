@@ -12,7 +12,7 @@ export class NewsConversation {
     }
 
     public configure() {
-        this.controller.hears(['get news'], 'direct_message', (bot, message) => {
+        this.controller.hears(['news'], 'direct_message', (bot, message) => {
 
             bot.createConversation(message, (err, convo) => {
 
