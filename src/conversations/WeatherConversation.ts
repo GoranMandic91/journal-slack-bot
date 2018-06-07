@@ -1,13 +1,8 @@
 import { ISlackMessage } from './../models/Slack';
 import { SlackController, Conversation } from 'botkit';
 import weatherService from '../services/WeatherService';
-import * as Wit from 'botkit-middleware-witai';
 import geocodeService from '../services/GeocodeService';
 import * as moment from 'moment';
-
-const wit = Wit({
-    token: 'NG7AOCFDFQWNBOJDTUM2ZV63DGLKX5D7',
-});
 
 export class WeatherConversation {
 
@@ -15,7 +10,6 @@ export class WeatherConversation {
 
     constructor(controller: SlackController) {
         this.controller = controller;
-        this.controller.middleware.receive.use(wit.receive);
         this.configure();
 
     }

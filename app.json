@@ -1,20 +1,37 @@
 {
   "name": "JournalBot",
   "description": "Get the latest news and weather forecast in Slack",
-  "keywords": ["node", "bots", "slack","botkit"],
-  "success_url":"/",
-  "addons":[
+  "keywords": [
+    "node",
+    "bots",
+    "slack",
+    "botkit"
+  ],
+  "success_url": "/",
+  "addons": [
     {
       "plan": "mongolab",
       "as": "MONGO"
     }
   ],
   "env": {
-      "clientId": {
-          "description": "Client ID provided by Slack"
-      },
-      "clientSecret": {
-          "description": "Client Secret provided by Slack"
-      }
+    "clientId": {
+      "description": "Client ID provided by Slack"
+    },
+    "clientSecret": {
+      "description": "Client Secret provided by Slack"
+    },
+    "wit_access_token": {
+      "description": "Wit access token provided by Wit.ai"
+    },
+    "google_api_key": {
+      "description": "Api key provided by Google"
+    },
+    "news_api_key": {
+      "description": "Api key provided by News API"
+    },
+    "weather_api_key": {
+      "description": "Api key provided by DarkSky API"
+    }
   }
 }

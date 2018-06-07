@@ -1,9 +1,14 @@
 import * as rp from 'request-promise';
 import { IWeather } from '../models/weather';
 import * as moment from 'moment';
+import * as env from 'node-env-file';
+
+if (process.env.NODE_ENV !== 'production') {
+    env('./.env');
+}
 
 const weatherApi = 'https://api.darksky.net/forecast';
-const weatherApiKey = '00979ce26509f1f656df89fcb8282edf';
+const weatherApiKey = process.env.weather_api_key;
 const weatherIconUrl = 'https://uds-static.api.aero/weather/icon/lg/';
 
 enum WeatherIcons {

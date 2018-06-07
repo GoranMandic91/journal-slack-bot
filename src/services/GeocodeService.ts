@@ -1,7 +1,12 @@
 import * as rp from 'request-promise';
 import * as utf8 from 'utf8';
+import * as env from 'node-env-file';
 
-const GOOGLE_API_KEY = 'AIzaSyC-ftJE0pEN4PNwp8NxvHimU9KJofEM04A';
+if (process.env.NODE_ENV !== 'production') {
+    env('./.env');
+}
+
+const GOOGLE_API_KEY = process.env.google_api_key;
 
 export class GeocodeService {
 
