@@ -56,20 +56,41 @@ export class WeatherService {
         const attachments = [{
             thumb_url: weatherService.getIconUrl(weather.icon),
             color: '#F35A00',
+            mrkdwn_in: ['fields'],
             fields: [
                 {
                     title: 'Weather forcast for ' + address,
-                    value: weather.summary,
+                    value: `_${weather.summary}_`,
                     short: false,
                 },
                 {
-                    title: 'Min temperature',
-                    value: weather.temperatureLow.toFixed(0) + ' °C',
+                    title: '',
+                    value: '*Low:* `' + weather.temperatureLow.toFixed(0) + ' °C`',
                     short: true,
                 },
                 {
-                    title: 'Max temperature',
-                    value: weather.temperatureHigh.toFixed(0) + ' °C',
+                    title: '',
+                    value: '*High:* `' + weather.temperatureHigh.toFixed(0) + ' °C`',
+                    short: true,
+                },
+                {
+                    title: '',
+                    value: '*Humidity:* `' + (weather.humidity * 100).toFixed(0) + ' %`',
+                    short: true,
+                },
+                {
+                    title: '',
+                    value: '*Precip:* `' + (weather.precipProbability * 100).toFixed(0) + ' %`',
+                    short: true,
+                },
+                {
+                    title: '',
+                    value: '*Pressure:* `' + weather.pressure.toFixed(0) + ' hPa`',
+                    short: true,
+                },
+                {
+                    title: '',
+                    value: '*UV Index:* `' + weather.uvIndex.toFixed(0) + '`',
                     short: true,
                 },
             ],
