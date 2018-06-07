@@ -32,23 +32,24 @@ export class WeatherConversation {
                 let time;
 
                 if (!addressEntity) {
-                    convo.ask({
-                        text: 'Hmm :thinking_face: I need location, can you give me, please :slightly_smiling_face:',
-                    }, async (response: ISlackMessage, convo) => {
 
+                    convo.say({ text: 'Hmm :thinking_face:' });
+                    convo.ask({
+                        text: 'I need location, can you give me, please :slightly_smiling_face:',
+                    }, async (response: ISlackMessage, convo) => {
                         addressEntity = this.getAddressEntity(response.intents);
                         address = await geocodeService.geocode(response.intents[0].entities.location[0].value);
                         time = date ? moment(date) : moment();
                         this.send(convo, address, time, true);
-
                     });
                     convo.activate();
 
                 } else {
+
                     address = await geocodeService.geocode(addressEntity);
                     time = date ? moment(date) : moment();
-
                     this.send(convo, address, time, false);
+
                 }
 
             });
@@ -88,7 +89,7 @@ export class WeatherConversation {
         }
     }
 
-    public customHearsHandler(test: string, message: any) {
+    public customHearsHandler(test: string, message: ISlackMessage) {
         let isMatch = false;
         if (message.intents && message.intents[0] && message.intents[0].entities && message.intents[0].entities.intent) {
             message.intents[0].entities.intent.forEach((intent) => {
