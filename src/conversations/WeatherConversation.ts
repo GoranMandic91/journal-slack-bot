@@ -1,4 +1,5 @@
-import { SlackController } from 'botkit';
+import { ISlackMessage } from './../models/Slack';
+import { SlackController, Conversation } from 'botkit';
 import weatherService from '../services/WeatherService';
 import * as Wit from 'botkit-middleware-witai';
 import geocodeService from '../services/GeocodeService';
@@ -25,40 +26,66 @@ export class WeatherConversation {
 
             bot.createConversation(message, async (err, convo) => {
 
-                const entities = message.intents[0].entities;
-                const address = await geocodeService.geocode(entities.location[0].value);
-                const date = entities.datetime && entities.datetime[0] ? entities.datetime[0].value : '';
-
+                let addressEntity = this.getAddressEntity(message.intents);
+                const date = this.getDateEntity(message.intents);
+                let address;
                 let time;
-                if (date) {
-                    time = moment(date);
+
+                if (!addressEntity) {
+                    convo.ask({
+                        text: 'Hmm :thinking_face: I need location, can you give me, please :slightly_smiling_face:',
+                    }, async (response: ISlackMessage, convo) => {
+
+                        addressEntity = this.getAddressEntity(response.intents);
+                        address = await geocodeService.geocode(response.intents[0].entities.location[0].value);
+                        time = date ? moment(date) : moment();
+                        this.send(convo, address, time, true);
+
+                    });
+                    convo.activate();
+
                 } else {
-                    time = moment();
+                    address = await geocodeService.geocode(addressEntity);
+                    time = date ? moment(date) : moment();
+
+                    this.send(convo, address, time, false);
                 }
-
-                convo.addMessage({
-                    text: 'Here you go :man-tipping-hand::skin-tone-2:',
-                }, 'end-conversation');
-
-                weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
-
-                    convo.addMessage({
-                        text: 'I\'m getting weather forecast for you, please wait for a second :simple_smile:',
-                        action: 'get_weather',
-                    }, '');
-
-                    const attachments = weatherService.formatWeather(weather, address.address);
-
-                    convo.addMessage({
-                        attachments,
-                        action: 'end-conversation',
-                    }, 'get_weather');
-                });
-
-                convo.activate();
 
             });
         });
+    }
+
+    public send(convo: Conversation<ISlackMessage>, address: any, time: any, next: boolean) {
+
+        if (!address) {
+            convo.addMessage({
+                text: 'I can\'t get you forecast for given location :disappointed:',
+            }, '');
+        } else {
+            convo.addMessage({
+                text: 'Here you go :man-tipping-hand::skin-tone-2:',
+            }, 'end-conversation');
+
+            weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
+
+                convo.addMessage({
+                    text: 'I\'m getting weather forecast for you, please wait for a second :simple_smile:',
+                    action: 'get_weather',
+                }, '');
+
+                const attachments = weatherService.formatWeather(weather, address.address);
+
+                convo.addMessage({
+                    attachments,
+                    action: 'end-conversation',
+                }, 'get_weather');
+            });
+            if (next) {
+                convo.next();
+            } else {
+                convo.activate();
+            }
+        }
     }
 
     public customHearsHandler(test: string, message: any) {
@@ -69,5 +96,21 @@ export class WeatherConversation {
             });
         }
         return isMatch;
+    }
+
+    private getAddressEntity(intents: any) {
+        let addressEntity = '';
+        if (intents && intents[0] && intents[0].entities && intents[0].entities.location && intents[0].entities.location[0]) {
+            addressEntity = intents[0].entities.location[0].value;
+        }
+        return addressEntity;
+    }
+
+    private getDateEntity(intents: any) {
+        let dateEntity = '';
+        if (intents && intents[0] && intents[0].entities && intents[0].entities.datetime && intents[0].entities.datetime[0]) {
+            dateEntity = intents[0].entities.datetime[0].value;
+        }
+        return dateEntity;
     }
 }

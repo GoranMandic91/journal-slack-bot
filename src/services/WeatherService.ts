@@ -1,5 +1,6 @@
 import * as rp from 'request-promise';
 import { IWeather } from '../models/weather';
+import * as moment from 'moment';
 
 const weatherApi = 'https://api.darksky.net/forecast';
 const weatherApiKey = '00979ce26509f1f656df89fcb8282edf';
@@ -72,7 +73,7 @@ export class WeatherService {
                     short: true,
                 },
             ],
-            footer: `<https://darksky.net/forecast/${weather.latitude},${weather.longitude}/ca12/en| Dark Sky>`,
+            footer: `<https://darksky.net/details/${weather.latitude},${weather.longitude}/${moment(weather.time * 1000).format('YYYY-MM-DD')}/ca12/en| Dark Sky>`,
             footer_icon: 'http://haverzine.com/wp-content/uploads/2014/01/Dark-Sky-logo-on-mevvy.com_.png',
             ts: (weather.time).toString(),
         }];
