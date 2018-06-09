@@ -19,6 +19,7 @@ import * as mongoDB from 'botkit-storage-mongo';
 import * as env from 'node-env-file';
 import * as debug from 'debug';
 import { HelpSkill } from './skills/HelpSkill';
+import { GreetingConversation } from './conversations/GreetingConversation';
 debug('botkit:main');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -62,6 +63,7 @@ const journalConversation = new JournalConversation(controller);
 const newsConversation = new NewsConversation(controller);
 const usersConversation = new UsersConversation(controller);
 const weatherConversation = new WeatherConversation(controller);
+const greetingConversation = new GreetingConversation(controller);
 const sampleMiddleware = new SampleMiddleware(controller);
 
 const channelJoinSkill = new ChannelJoinSkill(controller);
