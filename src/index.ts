@@ -60,6 +60,7 @@ const appRegistration = new AppRegistration(controller);
 
 // Send an onboarding message when a new team joins
 const welcomeAboard = new WelcomeAboard(controller);
+const helpSkill = new HelpSkill(controller);
 
 const journalConversation = new JournalConversation(controller);
 const newsConversation = new NewsConversation(controller);
@@ -77,7 +78,6 @@ const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
 const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
-const helpSkill = new HelpSkill(controller);
 const defaultSkill = new DefaultSkill(controller);
 
 console.log('Journal Slack bot started!');

@@ -16,9 +16,7 @@ export class PartingConversation {
         this.controller.hears(['parting'], 'direct_message', this.customHearsHandler, (bot, message: any) => {
 
             bot.createConversation(message, async (err, convo) => {
-                let parting = this.getPartingEntity(message.intents);
-                parting = parting ? parting[0].toUpperCase() + parting.slice(1) : 'Hi';
-                convo.say({ text: parting + ' :wave::skin-tone-2:' });
+                convo.say({ text: 'See you :wave::skin-tone-2:' });
                 convo.say({ text: 'Hope I hear you soon :simple_smile:' });
                 convo.activate();
             });
@@ -36,11 +34,4 @@ export class PartingConversation {
         return isMatch;
     }
 
-    private getPartingEntity(intents: any) {
-        let partingEntity = '';
-        if (intents && intents[0] && intents[0]._text) {
-            partingEntity = intents[0]._text;
-        }
-        return partingEntity;
-    }
 }

@@ -16,10 +16,8 @@ export class GreetingConversation {
         this.controller.hears(['greeting'], 'direct_message', this.customHearsHandler, (bot, message: any) => {
 
             bot.createConversation(message, async (err, convo) => {
-                let greeting = this.getGreetingEntity(message.intents);
-                greeting = greeting ? greeting[0].toUpperCase() + greeting.slice(1) : 'Hi';
-                convo.say({ text: greeting + ' :man-raising-hand::skin-tone-2:' });
-                convo.say({ text: 'What can i do for you? :simple_smile:' });
+                convo.say({ text: 'Hello :man-raising-hand::skin-tone-2:' });
+                convo.say({ text: 'What can I do for you? :simple_smile:' });
                 convo.activate();
             });
         });
@@ -34,13 +32,5 @@ export class GreetingConversation {
             });
         }
         return isMatch;
-    }
-
-    private getGreetingEntity(intents: any) {
-        let greetingEntity = '';
-        if (intents && intents[0] && intents[0]._text) {
-            greetingEntity = intents[0]._text;
-        }
-        return greetingEntity;
     }
 }
