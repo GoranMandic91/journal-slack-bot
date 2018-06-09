@@ -1,7 +1,7 @@
 import { SlackController, Conversation } from 'botkit';
-import { INews, CountryList } from '../models/News';
+import { INews, CountryList } from '../models/news';
 import newsService from '../services/NewsService';
-import { ISlackMessage } from '../models/Slack';
+import { ISlackMessage } from '../models/slack';
 import geocodeService from '../services/GeocodeService';
 
 export class NewsConversation {

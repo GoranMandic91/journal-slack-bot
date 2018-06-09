@@ -1,5 +1,5 @@
 import * as rp from 'request-promise';
-import { INews } from '../models/News';
+import { INews } from '../models/news';
 import * as env from 'node-env-file';
 
 if (process.env.NODE_ENV !== 'production') {

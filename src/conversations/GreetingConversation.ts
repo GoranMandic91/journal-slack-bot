@@ -1,4 +1,4 @@
-import { ISlackMessage } from './../models/Slack';
+import { ISlackMessage } from '../models/slack';
 import { SlackController } from 'botkit';
 
 export class GreetingConversation {
