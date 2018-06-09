@@ -21,6 +21,7 @@ import * as debug from 'debug';
 import { HelpSkill } from './skills/HelpSkill';
 import { GreetingConversation } from './conversations/GreetingConversation';
 import { PartingConversation } from './conversations/PartingConversation';
+import { GratitudeConversation } from './conversations/GratitudeConversation';
 debug('botkit:main');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -66,6 +67,8 @@ const usersConversation = new UsersConversation(controller);
 const weatherConversation = new WeatherConversation(controller);
 const greetingConversation = new GreetingConversation(controller);
 const partingConversation = new PartingConversation(controller);
+const gratitudeConversation = new GratitudeConversation(controller);
+
 const sampleMiddleware = new SampleMiddleware(controller);
 
 const channelJoinSkill = new ChannelJoinSkill(controller);
