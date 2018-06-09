@@ -28,8 +28,9 @@ export class WeatherConversation {
                 if (!addressEntity) {
 
                     convo.say({ text: 'Hmm :thinking_face:' });
+                    convo.say({ text: 'I need location :earth_africa:' });
                     convo.ask({
-                        text: 'I need location :earth_africa: \nCan you give me location? Please :slightly_smiling_face:',
+                        text: 'Please give me location for weather forecast :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = this.getAddressEntity(response.intents);
                         address = await geocodeService.geocode(response.intents[0].entities.location[0].value);
