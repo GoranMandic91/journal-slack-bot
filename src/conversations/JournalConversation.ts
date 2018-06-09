@@ -1,5 +1,5 @@
 import { SlackController } from 'botkit';
-import { INews } from '../models/news';
+import { INews } from '../models/News';
 import newsService from '../services/NewsService';
 import weatherService from '../services/WeatherService';
 

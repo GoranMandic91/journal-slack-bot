@@ -1,5 +1,5 @@
 import * as rp from 'request-promise';
-import { IWeather } from '../models/weather';
+import { IWeather } from '../models/Weather';
 import * as moment from 'moment';
 import * as env from 'node-env-file';
 

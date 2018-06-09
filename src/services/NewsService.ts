@@ -1,5 +1,5 @@
 import * as rp from 'request-promise';
-import { INews } from '../models/news';
+import { INews } from '../models/News';
 import * as env from 'node-env-file';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -22,6 +22,25 @@ export class NewsService {
             .then((response) => {
                 return response.articles;
             });
+    }
+    public formatNews(news: INews[]) {
+        const attachments = news.map((article: INews) => {
+            return {
+                thumb_url: article.urlToImage,
+                color: '#F35A00',
+                fields: [
+                    {
+                        title: article.title,
+                        value: article.description,
+                        short: false,
+                    },
+                ],
+                footer: `<${article.url}| ${article.source.name.toLowerCase()}>`,
+                footer_icon: 'https://newsapi.org/images/n-logo-border.png',
+                ts: (new Date(article.publishedAt).getTime() / 1000).toString(),
+            };
+        });
+        return attachments;
     }
 
 }

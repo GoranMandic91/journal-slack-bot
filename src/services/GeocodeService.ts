@@ -26,9 +26,10 @@ export class GeocodeService {
                 return null;
             }
             return {
-                city: this.extractFromAdress(response.results[0].address_components, 'locality'),
+                city: this.extractFromAddressLongName(response.results[0].address_components, 'locality'),
                 address: response.results[0].formatted_address,
-                country: this.extractFromAdress(response.results[0].address_components, 'country'),
+                country: this.extractFromAddressLongName(response.results[0].address_components, 'country'),
+                country_code: this.extractFromAddressShortName(response.results[0].address_components, 'country').toLowerCase(),
                 location: response.results[0].geometry.location,
             };
 
@@ -38,11 +39,23 @@ export class GeocodeService {
         }
     }
 
-    public extractFromAdress(components, type) {
+    private extractFromAddressLongName(components, type) {
         for (let i = 0; i < components.length; i++) {
             for (let j = 0; j < components[i].types.length; j++) {
                 if (components[i].types[j] === type) {
                     return components[i].long_name;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    private extractFromAddressShortName(components, type) {
+        for (let i = 0; i < components.length; i++) {
+            for (let j = 0; j < components[i].types.length; j++) {
+                if (components[i].types[j] === type) {
+                    return components[i].short_name;
                 }
             }
         }

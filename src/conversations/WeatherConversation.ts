@@ -33,7 +33,7 @@ export class WeatherConversation {
                         text: 'Please give me location for weather forecast :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = this.getAddressEntity(response.intents);
-                        address = await geocodeService.geocode(response.intents[0].entities.location[0].value);
+                        address = await geocodeService.geocode(addressEntity);
                         time = date ? moment(date) : moment();
                         this.send(convo, address, time, true);
                     });
@@ -51,7 +51,7 @@ export class WeatherConversation {
         });
     }
 
-    public send(convo: Conversation<ISlackMessage>, address: any, time: any, next: boolean) {
+    public async send(convo: Conversation<ISlackMessage>, address: any, time: any, next: boolean) {
 
         if (!address) {
             convo.addMessage({
@@ -62,7 +62,7 @@ export class WeatherConversation {
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
             }, 'end-conversation');
 
-            weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
+            await weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
 
                 convo.addMessage({
                     text: 'I\'m getting weather forecast for you, please wait for a second :simple_smile:',
