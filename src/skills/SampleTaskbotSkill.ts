@@ -1,5 +1,5 @@
 import { SlackController } from 'botkit';
-import { ISlackUser } from '../models/slack';
+import { ISlackUser } from '../models/Slack';
 
 export class SampleTaskbotSkill {
 

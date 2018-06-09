@@ -1,6 +1,6 @@
 import { SlackController } from 'botkit';
-import { ISlackUser } from '../models/slack';
-import { ISlackTeam, ISlackBot } from '../models/slack';
+import { ISlackUser } from '../models/Slack';
+import { ISlackTeam, ISlackBot } from '../models/Slack';
 import * as debug from 'debug';
 debug('botkit:user_registration');
 

@@ -1,4 +1,4 @@
-import { ISlackBot, ISlackTeam } from '../models/slack';
+import { ISlackBot, ISlackTeam } from '../models/Slack';
 import { SlackController } from 'botkit';
 import * as debug from 'debug';
 

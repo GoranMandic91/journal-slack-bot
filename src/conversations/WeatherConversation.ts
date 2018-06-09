@@ -1,4 +1,4 @@
-import { ISlackMessage } from '../models/slack';
+import { ISlackMessage } from '../models/Slack';
 import { SlackController, Conversation } from 'botkit';
 import weatherService from '../services/WeatherService';
 import geocodeService from '../services/GeocodeService';
