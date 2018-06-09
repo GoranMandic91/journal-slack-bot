@@ -1,3 +1,4 @@
+import { CategoryNews } from './../models/news';
 import { SlackController, Conversation } from 'botkit';
 import { INews, CountryList } from '../models/news';
 import newsService from '../services/NewsService';
@@ -18,7 +19,9 @@ export class NewsConversation {
             bot.createConversation(message, async (err, convo) => {
 
                 let address;
+                let news_type;
                 let addressEntity = this.getAddressEntity(message.intents);
+                const newsTypeEntity = this.getNewsTypeEntity(message.intents);
 
                 if (!addressEntity) {
 
@@ -28,22 +31,25 @@ export class NewsConversation {
                         text: 'Please give me location for news :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = this.getAddressEntity(response.intents);
+                        news_type = this.getNewsTypeEntity(response.intents);
+
+                        news_type = news_type ? news_type : newsTypeEntity;
                         address = await geocodeService.geocode(addressEntity);
-                        this.send(convo, address, true);
+                        this.send(convo, address, true, news_type);
                     });
                     convo.activate();
 
                 } else {
 
                     address = await geocodeService.geocode(addressEntity);
-                    this.send(convo, address, false);
+                    this.send(convo, address, false, newsTypeEntity);
                 }
 
             });
         });
     }
 
-    public async send(convo: Conversation<ISlackMessage>, address: any, next: boolean) {
+    public async send(convo: Conversation<ISlackMessage>, address: any, next: boolean, news_type?: CategoryNews) {
 
         if (!address || CountryList.indexOf(address.country_code) === -1) {
             const formatAddress = address && address.address ? ', ' + address.address + ', ' : ' ';
@@ -56,7 +62,7 @@ export class NewsConversation {
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
             }, 'end_conversation');
 
-            await newsService.get(address.country_code).then((articles) => {
+            await newsService.get(address.country_code, news_type).then((articles) => {
 
                 convo.addMessage({
                     text: 'I\'m getting news for you, please wait for a second :simple_smile:',
@@ -95,6 +101,14 @@ export class NewsConversation {
             addressEntity = intents[0].entities.location[0].value;
         }
         return addressEntity;
+    }
+
+    private getNewsTypeEntity(intents: any): CategoryNews {
+        let newsTypeEntity = '';
+        if (intents && intents[0] && intents[0].entities && intents[0].entities.news_type && intents[0].entities.news_type[0]) {
+            newsTypeEntity = intents[0].entities.news_type[0].value;
+        }
+        return newsTypeEntity as CategoryNews;
     }
 
 }

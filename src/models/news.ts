@@ -12,6 +12,14 @@ export interface ISource {
     id?: string;
     name?: string;
 }
+export enum CategoryNews {
+    business = 'business',
+    entertainment = 'entertainment',
+    health = 'health',
+    science = 'science',
+    sports = 'sports',
+    technology = 'technology',
+}
 
 export const CountryList = [
     'ae', // UAE

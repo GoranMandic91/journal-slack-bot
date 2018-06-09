@@ -1,3 +1,4 @@
+import { CategoryNews } from './../models/news';
 import * as rp from 'request-promise';
 import { INews } from '../models/news';
 import * as env from 'node-env-file';
@@ -11,8 +12,11 @@ const newsApiKey = process.env.news_api_key;
 
 export class NewsService {
 
-    public get(query: string): Promise<INews[]> {
-        const url = `${newsApi}/top-headlines?country=${query}&pageSize=5&apiKey=${newsApiKey}`;
+    public get(country: string, category?: CategoryNews): Promise<INews[]> {
+        let url = `${newsApi}/top-headlines?country=${country}&pageSize=5&apiKey=${newsApiKey}`;
+        if (category) {
+            url = `${newsApi}/top-headlines?country=${country}&category=${category}&pageSize=5&apiKey=${newsApiKey}`;
+        }
         const options = {
             method: 'GET',
             uri: url,
