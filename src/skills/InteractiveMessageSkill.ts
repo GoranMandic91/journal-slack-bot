@@ -15,7 +15,7 @@ export class InteractiveMessageSkill {
         // if the button action is 'say', act as if user said that thing
         this.controller.middleware.receive.use((bot, message: ISlackMessage, next) => {
             if (message.type === 'interactive_message_callback') {
-                if (message.actions[0].name.match(/^say$/)) {
+                if (message.actions[0].name.match(/^day_list$/) || message.actions[0].name.match(/^hour_list$/)) {
                     const reply = message.original_message;
 
                     for (let a = 0; a < reply.attachments.length; a++) {
@@ -29,7 +29,7 @@ export class InteractiveMessageSkill {
 
                     reply.attachments.push(
                         {
-                            text: person + ' said, ' + message.actions[0].value,
+                            text: person + ' choosed `' + message.actions[0].selected_options[0].value + '`',
                         }
                     );
 

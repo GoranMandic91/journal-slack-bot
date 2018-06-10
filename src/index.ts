@@ -1,5 +1,5 @@
+import { AddressConversation } from './conversations/AddressConversation';
 import { AppRegistration } from './components/AppRegistration';
-import { RtmManager } from './components/RtmManager';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
 import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
@@ -14,14 +14,15 @@ import { SampleConversationSkill } from './skills/SampleConversationSkill';
 import { SampleTaskbotSkill } from './skills/SampleTaskbotSkill';
 import { SampleEventsSkill } from './skills/SampleEventsSkill';
 import { DefaultConversation } from './conversations/DefaultConversation';
-import * as Botkit from 'botkit';
-import * as mongoDB from 'botkit-storage-mongo';
-import * as env from 'node-env-file';
-import * as debug from 'debug';
 import { HelpConversation } from './conversations/HelpConversation';
 import { GreetingConversation } from './conversations/GreetingConversation';
 import { PartingConversation } from './conversations/PartingConversation';
 import { GratitudeConversation } from './conversations/GratitudeConversation';
+import { TimeConversation } from './conversations/TimeConversation';
+import * as Botkit from 'botkit';
+import * as mongoDB from 'botkit-storage-mongo';
+import * as env from 'node-env-file';
+import * as debug from 'debug';
 debug('botkit:main');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -59,25 +60,27 @@ const appRegistration = new AppRegistration(controller);
 // const rtmManager = new RtmManager(controller);
 
 // Send an onboarding message when a new team joins
+const sampleMiddleware = new SampleMiddleware(controller);
+
 const welcomeAboardConversation = new WelcomeAboardConversation(controller);
 const helpConversation = new HelpConversation(controller);
 
-const journalConversation = new JournalConversation(controller);
+const addressConversation = new AddressConversation(controller);
+const timeConversation = new TimeConversation(controller);
 const newsConversation = new NewsConversation(controller);
-const usersConversation = new UsersConversation(controller);
 const weatherConversation = new WeatherConversation(controller);
 const greetingConversation = new GreetingConversation(controller);
 const partingConversation = new PartingConversation(controller);
 const gratitudeConversation = new GratitudeConversation(controller);
 
-const sampleMiddleware = new SampleMiddleware(controller);
-
+const journalConversation = new JournalConversation(controller);
+const usersConversation = new UsersConversation(controller);
 const channelJoinSkill = new ChannelJoinSkill(controller);
 const interactiveMessageSkill = new InteractiveMessageSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
 const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
-const defaultConversation = new DefaultConversation(controller);
 
+const defaultConversation = new DefaultConversation(controller);
 console.log('Journal Slack bot started!');

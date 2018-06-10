@@ -1,3 +1,4 @@
+import { IAddress } from './address';
 import { Identity } from 'botkit';
 import { User, SlackBot, Team, SlackMessage, SlackAttachment, SlackController } from 'botkit';
 
@@ -46,6 +47,8 @@ export interface ISlackUser extends User {
     updated?: number;
     is_app_user?: boolean;
     has_2fa?: boolean;
+    address?: IAddress;
+    cron_pattern?: string;
 }
 
 export interface ISlackUserProfil {
@@ -100,4 +103,5 @@ export interface IAction {
     name?: string;
     type?: string;
     value?: string;
+    selected_options?: any;
 }
