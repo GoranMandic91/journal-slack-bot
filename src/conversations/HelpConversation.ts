@@ -1,6 +1,6 @@
 import { SlackController } from 'botkit';
 
-export class DefaultSkill {
+export class HelpConversation {
 
     private controller: SlackController;
 
@@ -11,12 +11,13 @@ export class DefaultSkill {
 
     public configure() {
 
-        this.controller.hears(['(.*)'], 'direct_message', (bot, message) => {
+        this.controller.hears(['help'], 'direct_message', (bot, message) => {
             bot.createConversation(message, (err, convo) => {
                 if (!err) {
-                    convo.say(
-                        'I don\'t understand what you want :thinking_face:. Type `help` to see what I can!'
-                    );
+                    convo.say('Type: \n- `news` for news :point_up::skin-tone-2:');
+                    convo.say('- `weather` to get weather forecast :v::skin-tone-2:');
+                    convo.say('- `journal` to get news and weather forecast :crossed_fingers::skin-tone-2:');
+
                     convo.activate();
                 }
             });

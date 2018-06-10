@@ -4,7 +4,7 @@ import * as debug from 'debug';
 
 debug('botkit:onboarding');
 
-export class WelcomeAboard {
+export class WelcomeAboardConversation {
 
     private controller: any;
 

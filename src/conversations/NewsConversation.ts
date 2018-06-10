@@ -28,7 +28,7 @@ export class NewsConversation {
                     convo.say({ text: 'Hmm :thinking_face:' });
                     convo.say({ text: 'I need location :earth_africa:' });
                     convo.ask({
-                        text: 'Please give me location for news :slightly_smiling_face:',
+                        text: 'Give me country name from which you want me to get you news :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = this.getAddressEntity(response.intents);
                         news_type = this.getNewsTypeEntity(response.intents);
@@ -52,11 +52,10 @@ export class NewsConversation {
     public async send(convo: Conversation<ISlackMessage>, address: any, next: boolean, news_type?: CategoryNews) {
 
         if (!address || CountryList.indexOf(address.country_code) === -1) {
-            const formatAddress = address && address.address ? ', ' + address.address + ', ' : ' ';
-            convo.addMessage({
-                text: 'I can\'t get you news. Given location' + formatAddress + 'is not supported :disappointed:',
-            }, '');
-            convo.activate();
+            const formatAddress = address && address.address ? ', *' + address.address + '*, ' : ' ';
+            convo.say({
+                text: 'I can\'t get you news. Given country' + formatAddress + 'is not supported :disappointed:',
+            });
         } else {
             convo.addMessage({
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
@@ -76,12 +75,12 @@ export class NewsConversation {
                     action: 'end_conversation',
                 }, 'get_news');
             });
+        }
 
-            if (next) {
-                convo.next();
-            } else {
-                convo.activate();
-            }
+        if (next) {
+            convo.next();
+        } else {
+            convo.activate();
         }
     }
 

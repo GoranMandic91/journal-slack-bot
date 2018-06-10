@@ -22,7 +22,7 @@ export class GeocodeService {
 
         try {
             const response = await rp(opts);
-            if (response.status !== 'OK') {
+            if (response.status !== 'OK' || response.results.length === 0) {
                 return null;
             }
             return {

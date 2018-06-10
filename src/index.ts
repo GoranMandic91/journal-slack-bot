@@ -2,7 +2,7 @@ import { AppRegistration } from './components/AppRegistration';
 import { RtmManager } from './components/RtmManager';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
-import { WelcomeAboard } from './components/WelcomeAboard';
+import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
 import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
@@ -13,12 +13,12 @@ import { NewsConversation } from './conversations/NewsConversation';
 import { SampleConversationSkill } from './skills/SampleConversationSkill';
 import { SampleTaskbotSkill } from './skills/SampleTaskbotSkill';
 import { SampleEventsSkill } from './skills/SampleEventsSkill';
-import { DefaultSkill } from './skills/DefaultSkill';
+import { DefaultConversation } from './conversations/DefaultConversation';
 import * as Botkit from 'botkit';
 import * as mongoDB from 'botkit-storage-mongo';
 import * as env from 'node-env-file';
 import * as debug from 'debug';
-import { HelpSkill } from './skills/HelpSkill';
+import { HelpConversation } from './conversations/HelpConversation';
 import { GreetingConversation } from './conversations/GreetingConversation';
 import { PartingConversation } from './conversations/PartingConversation';
 import { GratitudeConversation } from './conversations/GratitudeConversation';
@@ -59,8 +59,8 @@ const appRegistration = new AppRegistration(controller);
 // const rtmManager = new RtmManager(controller);
 
 // Send an onboarding message when a new team joins
-const welcomeAboard = new WelcomeAboard(controller);
-const helpSkill = new HelpSkill(controller);
+const welcomeAboardConversation = new WelcomeAboardConversation(controller);
+const helpConversation = new HelpConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
 const newsConversation = new NewsConversation(controller);
@@ -78,6 +78,6 @@ const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
 const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
-const defaultSkill = new DefaultSkill(controller);
+const defaultConversation = new DefaultConversation(controller);
 
 console.log('Journal Slack bot started!');

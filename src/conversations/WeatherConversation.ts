@@ -54,9 +54,9 @@ export class WeatherConversation {
     public async send(convo: Conversation<ISlackMessage>, address: any, time: any, next: boolean) {
 
         if (!address) {
-            convo.addMessage({
+            convo.say({
                 text: 'I can\'t get you forecast for given location :disappointed:',
-            }, '');
+            });
         } else {
             convo.addMessage({
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
@@ -76,11 +76,11 @@ export class WeatherConversation {
                     action: 'end-conversation',
                 }, 'get_weather');
             });
-            if (next) {
-                convo.next();
-            } else {
-                convo.activate();
-            }
+        }
+        if (next) {
+            convo.next();
+        } else {
+            convo.activate();
         }
     }
 
