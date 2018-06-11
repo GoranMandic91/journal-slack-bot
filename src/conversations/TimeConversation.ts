@@ -1,5 +1,5 @@
-import { ISlackMessage, ISlackUser } from './../models/Slack';
-import { SlackController, SlackBot } from 'botkit';
+import { ISlackMessage, ISlackUser, ISlackBot, ISlackAttachment } from './../models/Slack';
+import { SlackController, SlackBot, Conversation } from 'botkit';
 
 const DAY_REPEAT = ['every day', 'every Monday', 'every Tuesday', 'every Wednesday', 'every Thursday', 'every Friday', 'every Saturday', 'every Sunday'];
 
@@ -31,8 +31,8 @@ export class TimeConversation {
                         }, (message: ISlackMessage, convo) => {
                             const hourRepeat = message.actions[0].selected_options[0].value;
                             pattern = '00 00 ' + hourRepeat.split(':')[0] + pattern;
-
-                            this.saveTime(bot, message, convo, pattern);
+                            const humanPattern = dayRepeat + ' at ' + hourRepeat;
+                            this.saveTime(bot, message, convo, pattern, humanPattern);
                         });
                         convo.next();
                     }, {}, 'yes_thread');
@@ -76,34 +76,34 @@ export class TimeConversation {
         }];
     }
 
-    private async saveTime(bot, message: ISlackMessage, convo, pattern: string) {
+    private async saveTime(bot: ISlackBot, message: ISlackMessage, convo: Conversation<ISlackMessage>, pattern: string, humanPattern: string) {
 
         await this.controller.storage.users.get(message.user, async (err, user: ISlackUser) => {
             if (!user) {
                 await bot.api.users.info({ user: message.user }, (error, response) => {
                     user = response.user;
                     user.cron_pattern = pattern;
-                    this.saveUser(user, convo);
+                    this.saveUser(user, convo, humanPattern);
                 });
             } else {
                 user.cron_pattern = pattern;
-                this.saveUser(user, convo);
+                this.saveUser(user, convo, humanPattern);
             }
         });
         convo.next();
     }
 
-    private async saveUser(user: ISlackUser, convo) {
+    private async saveUser(user: ISlackUser, convo: Conversation<ISlackMessage>, humanPattern: string) {
         await this.controller.storage.users.save(user, (err, saved) => {
             if (err) {
                 convo.say({ text: 'I experienced an error adding your time preference:' + err });
             } else {
-                convo.say({ text: 'Time preference saved succesfully' });
+                convo.say({ text: `Time preference \`${humanPattern}\` saved succesfully` });
             }
         });
     }
 
-    private getAttachment(day: boolean) {
+    private getAttachment(day: boolean): ISlackAttachment[] {
         const attachment = {
             text: day ? 'Choose a day repeat option' : 'Choose a hour repeat option',
             color: '#28b395',
@@ -117,7 +117,7 @@ export class TimeConversation {
             }],
         };
         if (!day) {
-            for (let index = 0; index < 23; index++) {
+            for (let index = 0; index < 24; index++) {
                 attachment.actions[0].options.push({
                     text: index < 10 ? '0' + index + ':00' : index + ':00',
                     value: index < 10 ? '0' + index + ':00' : index + ':00',
