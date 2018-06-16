@@ -5,7 +5,6 @@ import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversa
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
 import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
-import { UsersConversation } from './conversations/UsersConversation';
 import { JournalConversation } from './conversations/JournalConversation';
 import { WeatherConversation } from './conversations/WeatherConversation';
 import { NewsConversation } from './conversations/NewsConversation';
@@ -73,7 +72,6 @@ const gratitudeConversation = new GratitudeConversation(controller);
 const settingsConversation = new SettingsConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
-const usersConversation = new UsersConversation(controller);
 const channelJoinSkill = new ChannelJoinSkill(controller);
 const interactiveMessageSkill = new InteractiveMessageSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
