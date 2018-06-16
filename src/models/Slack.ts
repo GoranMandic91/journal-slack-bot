@@ -49,6 +49,7 @@ export interface ISlackUser extends User {
     has_2fa?: boolean;
     address?: IAddress;
     cron_pattern?: string;
+    active_journal?: boolean;
 }
 
 export interface ISlackUserProfil {

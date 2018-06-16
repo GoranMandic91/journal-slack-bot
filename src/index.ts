@@ -19,6 +19,7 @@ import { GreetingConversation } from './conversations/GreetingConversation';
 import { PartingConversation } from './conversations/PartingConversation';
 import { GratitudeConversation } from './conversations/GratitudeConversation';
 import { TimeConversation } from './conversations/TimeConversation';
+import { SettingsConversation } from './conversations/SettingsConversation';
 import * as Botkit from 'botkit';
 import * as mongoDB from 'botkit-storage-mongo';
 import * as env from 'node-env-file';
@@ -65,13 +66,15 @@ const sampleMiddleware = new SampleMiddleware(controller);
 const welcomeAboardConversation = new WelcomeAboardConversation(controller);
 const helpConversation = new HelpConversation(controller);
 
-const addressConversation = new AddressConversation(controller);
-const timeConversation = new TimeConversation(controller);
 const newsConversation = new NewsConversation(controller);
 const weatherConversation = new WeatherConversation(controller);
 const greetingConversation = new GreetingConversation(controller);
 const partingConversation = new PartingConversation(controller);
 const gratitudeConversation = new GratitudeConversation(controller);
+
+const timeConversation = new TimeConversation(controller);
+const addressConversation = new AddressConversation(controller);
+const settingsConversation = new SettingsConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
 const usersConversation = new UsersConversation(controller);

@@ -42,5 +42,21 @@ export class InteractiveMessageSkill {
 
         });
 
+        this.controller.middleware.receive.use((bot, message: ISlackMessage, next) => {
+            if (message.type === 'interactive_message_callback') {
+                if (message.actions[0].name.match(/^global_list$/)) {
+                    const reply = message.original_message;
+
+                    reply.attachments = [{
+                        color: message.actions[0].value === 'quit settings' ? '#F35A00' : '#28b395',
+                        text: 'You choose to ' + message.actions[0].value,
+                    }];
+
+                    bot.replyInteractive(message, reply);
+                }
+            }
+            next();
+        });
+
     }
 }
