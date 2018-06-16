@@ -1,6 +1,6 @@
 import { AppRegistration } from './components/AppRegistration';
 import { AppServer } from './components/AppServer';
-import { InteractiveMessageSkill } from './skills/InteractiveMessageSkill';
+import { InteractiveMessageMiddleware } from './middlewares/InteractiveMessageMiddleware';
 import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
 import { SampleMiddleware } from './middlewares/SampleMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
@@ -73,7 +73,7 @@ const settingsConversation = new SettingsConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
 const channelJoinSkill = new ChannelJoinSkill(controller);
-const interactiveMessageSkill = new InteractiveMessageSkill(controller);
+const interactiveMessageMiddleware = new InteractiveMessageMiddleware(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);

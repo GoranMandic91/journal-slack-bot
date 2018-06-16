@@ -1,6 +1,7 @@
 import { IAddress } from './address';
 import { Identity } from 'botkit';
 import { User, SlackBot, Team, SlackMessage, SlackAttachment, SlackController } from 'botkit';
+import { ICron } from './cron';
 
 export interface ISlackTeam extends Team {
     createdBy?: string;
@@ -48,7 +49,7 @@ export interface ISlackUser extends User {
     is_app_user?: boolean;
     has_2fa?: boolean;
     address?: IAddress;
-    cron_pattern?: string;
+    cron?: ICron;
     active_journal?: boolean;
 }
 

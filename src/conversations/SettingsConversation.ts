@@ -8,13 +8,14 @@ export const DAY_REPEAT = ['every day', 'every Monday', 'every Tuesday', 'every 
 export class SettingsConversation {
 
     private controller: SlackController;
-    private pattern: string;
+    private pattern: any;
     private user: ISlackUser;
 
     constructor(controller: SlackController) {
         this.controller = controller;
-        this.pattern = '';
+        this.pattern = null;
         this.user = null;
+
         this.configure();
     }
 
@@ -27,13 +28,16 @@ export class SettingsConversation {
                         if (!user) {
                             await bot.api.users.info({ user: message.user }, (error, response) => {
                                 user = response.user;
-                                user.cron_pattern = null;
+                                user.cron = null;
                                 user.address = null;
-                                this.saveUser(user, convo);
+                                user.active_journal = false;
                                 this.user = user;
+                                convo.setVar('user', this.user);
+                                this.saveUser(user, convo);
                             });
                         } else {
                             this.user = user;
+                            convo.setVar('user', this.user);
                         }
 
                         convo.addQuestion({
@@ -59,14 +63,17 @@ export class SettingsConversation {
                                 attachments: settingsService.getTimeAttachment(false),
                             }, (message: ISlackMessage, convo) => {
                                 const hourRepeat = message.actions[0].selected_options[0].value;
-                                this.pattern = '00 00 ' + hourRepeat.split(':')[0] + this.pattern;
-                                this.saveSettings(bot, message, convo, 'cron_pattern', this.pattern);
+                                this.pattern = {
+                                    formatted: dayRepeat + ' at ' + hourRepeat,
+                                    pattern: '00 00 ' + hourRepeat.split(':')[0] + this.pattern,
+                                };
+                                this.saveSettings(bot, message, convo, 'cron', this.pattern);
                             });
                             convo.next();
                         }, {}, 'time_thread');
 
                         convo.beforeThread('enable_thread', async (convo, next) => {
-                            if (this.user.active_journal) {
+                            if (this.user.active_journal && this.user.address && this.user.cron) {
                                 await this.saveSettings(bot, message, convo, 'active_journal', false);
                                 convo.addMessage({
                                     text: 'You succesfully disable journal.',
@@ -74,7 +81,7 @@ export class SettingsConversation {
                                 }, 'enable_thread');
                                 convo.next();
                             } else {
-                                if (!this.user.address && !this.user.cron_pattern) {
+                                if (!this.user.address || !this.user.cron) {
                                     convo.addMessage({
                                         text: 'You must first set address and time settings and then enable journal.',
                                         action: 'default',
@@ -131,6 +138,7 @@ export class SettingsConversation {
                 convo.say({ text: 'I experienced an error saving settings:' + err });
             } else {
                 convo.say({ text: 'Settings saved succesfully!', action: 'default', });
+                convo.setVar('user', user);
             }
         });
         convo.next();

@@ -5,13 +5,14 @@ import { SlackBot } from 'botkit';
 export class SettingsService {
 
     public getGlobalAttachment(user: ISlackUser): ISlackAttachment[] {
+        const enabled = user && user.cron && user.cron.pattern.length && user.address && user.address.address;
         const attachment = [{
             callback_id: '123',
             color: '#28b395',
             attachment_type: 'default',
             fields: [{
                 title: '',
-                value: user && user.address && user.address.address ? user.address.address : 'not setted yet',
+                value: user && user.address && user.address.address ? '{{vars.user.address.address}}' : 'not setted yet',
                 short: false,
             }],
             actions: [{
@@ -34,7 +35,7 @@ export class SettingsService {
             fields: [
                 {
                     title: '',
-                    value: user && user.cron_pattern && user.cron_pattern.length ? this.setFromPattern(user.cron_pattern) : 'not setted yet',
+                    value: user && user.cron && user.cron.pattern && user.cron.pattern.length ? '{{vars.user.cron.formatted}}' : 'not setted yet',
                     short: false,
                 },
             ],
@@ -60,17 +61,17 @@ export class SettingsService {
             fields: [
                 {
                     title: '',
-                    value: user && user.active_journal ? 'enabled' : 'disabled',
+                    value: '{{#vars.user.active_journal}}enabled{{/vars.user.active_journal}}{{^vars.user.active_journal}}disabled{{/vars.user.active_journal}}',
                     short: false,
                 },
             ],
             actions: [
                 {
                     name: 'global_list',
-                    text: user && user.active_journal ? 'disable' : 'enable',
+                    text: '{{#vars.user.active_journal}}disable{{/vars.user.active_journal}}{{^vars.user.active_journal}}enable{{/vars.user.active_journal}}',
                     value: 'enable/disable',
                     type: 'button',
-                    style: user && user.active_journal ? 'danger' : 'primary',
+                    style: '{{#vars.user.active_journal}}danger{{/vars.user.active_journal}}{{^vars.user.active_journal}}primary{{/vars.user.active_journal}}',
                     confirm: {
                         title: 'Are you sure?',
                         text: 'Do you realy want to edit enable settings?',
@@ -154,20 +155,6 @@ export class SettingsService {
             },
         }];
     }
-
-    public setFromPattern(pattern: string) {
-        let formatted = '';
-        const DAY_REPEAT = ['every Sunday', 'every Monday', 'every Tuesday', 'every Wednesday', 'every Thursday', 'every Friday', 'every Saturday'];
-        const lastChar = pattern.slice(-1);
-        if (lastChar !== '*') {
-            formatted = DAY_REPEAT[lastChar];
-        } else {
-            formatted = 'every day';
-        }
-        formatted = formatted + ' at ' + pattern.slice(6, 8) + ':00';
-        return formatted;
-    }
-
 }
 
 const settingsService = new SettingsService();

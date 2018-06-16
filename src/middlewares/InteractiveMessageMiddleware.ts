@@ -1,6 +1,6 @@
 import { SlackController } from 'botkit';
 import { ISlackMessage } from '../models/Slack';
-export class InteractiveMessageSkill {
+export class InteractiveMessageMiddleware {
 
     private controller: SlackController;
 
@@ -11,8 +11,6 @@ export class InteractiveMessageSkill {
 
     public configure() {
 
-        // create special handlers for certain actions in buttons
-        // if the button action is 'say', act as if user said that thing
         this.controller.middleware.receive.use((bot, message: ISlackMessage, next) => {
             if (message.type === 'interactive_message_callback') {
                 if (message.actions[0].name.match(/^day_list$/) || message.actions[0].name.match(/^hour_list$/)) {
