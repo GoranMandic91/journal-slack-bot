@@ -52,7 +52,7 @@ export class NewsConversation {
     public async send(convo: Conversation<ISlackMessage>, address: any, next: boolean, news_type?: CategoryNews) {
 
         if (!address || CountryList.indexOf(address.country_code) === -1) {
-            const formatAddress = address && address.address ? ', *' + address.address + '*, ' : ' ';
+            const formatAddress = address && address.formatted_address ? ', *' + address.formatted_address + '*, ' : ' ';
             convo.say({
                 text: 'I can\'t get you news. Given country' + formatAddress + 'is not supported :disappointed:',
             });

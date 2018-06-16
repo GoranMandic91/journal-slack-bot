@@ -30,7 +30,7 @@ export class SettingsConversation {
                                 user = response.user;
                                 user.cron = null;
                                 user.address = null;
-                                user.active_journal = false;
+                                user.is_active_journal = false;
                                 this.user = user;
                                 convo.setVar('user', this.user);
                                 this.saveUser(user, convo);
@@ -41,7 +41,7 @@ export class SettingsConversation {
                         }
 
                         convo.addQuestion({
-                            text: 'Ok. Please type your address and I will do the rest :simple_smile:',
+                            text: 'Please type your address and I will do the rest :simple_smile:',
                         }, async (message: ISlackMessage, convo) => {
                             const address = await geocodeService.geocode(message.text);
                             if (address) {
@@ -73,8 +73,8 @@ export class SettingsConversation {
                         }, {}, 'time_thread');
 
                         convo.beforeThread('enable_thread', async (convo, next) => {
-                            if (this.user.active_journal && this.user.address && this.user.cron) {
-                                await this.saveSettings(bot, message, convo, 'active_journal', false);
+                            if (this.user.is_active_journal && this.user.address && this.user.cron) {
+                                await this.saveSettings(bot, message, convo, 'is_active_journal', false);
                                 convo.addMessage({
                                     text: 'You succesfully disable journal.',
                                     action: 'default',
@@ -88,7 +88,7 @@ export class SettingsConversation {
                                     }, 'enable_thread');
                                     convo.next();
                                 } else {
-                                    await this.saveSettings(bot, message, convo, 'active_journal', true);
+                                    await this.saveSettings(bot, message, convo, 'is_active_journal', true);
                                     convo.addMessage({
                                         text: 'You succesfully enable journal.',
                                         action: 'stop',
@@ -100,8 +100,8 @@ export class SettingsConversation {
                         });
 
                         convo.addMessage({
-                            text: 'Come again at any time if you change your mind about it. Just type `settings`.',
-                            action: 'stop', // this marks the converation as unsuccessful
+                            text: 'Come again at any time if you change your mind. Just type `settings`.',
+                            action: 'stop',
                         }, 'quit_thread');
 
                         convo.ask({ attachments: settingsService.getGlobalAttachment(this.user) }, settingsService.getCallbackBranch(bot));

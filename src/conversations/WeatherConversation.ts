@@ -69,7 +69,7 @@ export class WeatherConversation {
                     action: 'get_weather',
                 }, '');
 
-                const attachments = weatherService.formatWeather(weather, address.address);
+                const attachments = weatherService.formatWeather(weather, address.formatted_address);
 
                 convo.addMessage({
                     attachments,

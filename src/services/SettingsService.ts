@@ -5,14 +5,13 @@ import { SlackBot } from 'botkit';
 export class SettingsService {
 
     public getGlobalAttachment(user: ISlackUser): ISlackAttachment[] {
-        const enabled = user && user.cron && user.cron.pattern.length && user.address && user.address.address;
         const attachment = [{
             callback_id: '123',
             color: '#28b395',
             attachment_type: 'default',
             fields: [{
                 title: '',
-                value: user && user.address && user.address.address ? '{{vars.user.address.address}}' : 'not setted yet',
+                value: '{{#vars.user.address}}{{vars.user.address.formatted_address}}{{/vars.user.address}}{{^vars.user.address}}not setted yet{{/vars.user.address}}',
                 short: false,
             }],
             actions: [{
@@ -35,7 +34,7 @@ export class SettingsService {
             fields: [
                 {
                     title: '',
-                    value: user && user.cron && user.cron.pattern && user.cron.pattern.length ? '{{vars.user.cron.formatted}}' : 'not setted yet',
+                    value: '{{#vars.user.cron}}{{vars.user.cron.formatted}}{{/vars.user.cron}}{{^vars.user.cron}}not setted yet{{/vars.user.cron}}',
                     short: false,
                 },
             ],
@@ -61,17 +60,17 @@ export class SettingsService {
             fields: [
                 {
                     title: '',
-                    value: '{{#vars.user.active_journal}}enabled{{/vars.user.active_journal}}{{^vars.user.active_journal}}disabled{{/vars.user.active_journal}}',
+                    value: '{{#vars.user.is_active_journal}}enabled{{/vars.user.is_active_journal}}{{^vars.user.is_active_journal}}disabled{{/vars.user.is_active_journal}}',
                     short: false,
                 },
             ],
             actions: [
                 {
                     name: 'global_list',
-                    text: '{{#vars.user.active_journal}}disable{{/vars.user.active_journal}}{{^vars.user.active_journal}}enable{{/vars.user.active_journal}}',
+                    text: '{{#vars.user.is_active_journal}}disable{{/vars.user.is_active_journal}}{{^vars.user.is_active_journal}}enable{{/vars.user.is_active_journal}}',
                     value: 'enable/disable',
                     type: 'button',
-                    style: '{{#vars.user.active_journal}}danger{{/vars.user.active_journal}}{{^vars.user.active_journal}}primary{{/vars.user.active_journal}}',
+                    style: '{{#vars.user.is_active_journal}}danger{{/vars.user.is_active_journal}}{{^vars.user.is_active_journal}}primary{{/vars.user.is_active_journal}}',
                     confirm: {
                         title: 'Are you sure?',
                         text: 'Do you realy want to edit enable settings?',

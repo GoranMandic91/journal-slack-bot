@@ -1,3 +1,4 @@
+import { IAddress } from './../models/address';
 import * as rp from 'request-promise';
 import * as utf8 from 'utf8';
 import * as env from 'node-env-file';
@@ -10,7 +11,7 @@ const GOOGLE_API_KEY = process.env.google_api_key;
 
 export class GeocodeService {
 
-    public async geocode(address: string) {
+    public async geocode(address: string): Promise<IAddress> {
 
         const encodedAddress = utf8.encode(address);
 
@@ -27,7 +28,7 @@ export class GeocodeService {
             }
             return {
                 city: this.extractFromAddressLongName(response.results[0].address_components, 'locality'),
-                address: response.results[0].formatted_address,
+                formatted_address: response.results[0].formatted_address,
                 country: this.extractFromAddressLongName(response.results[0].address_components, 'country'),
                 country_code: this.extractFromAddressShortName(response.results[0].address_components, 'country').toLowerCase(),
                 location: response.results[0].geometry.location,

@@ -1,6 +1,6 @@
 export interface IAddress {
     city?: string;
-    address?: string;
+    formatted_address?: string;
     country?: string;
     country_code?: string;
     location?: ILocation;
