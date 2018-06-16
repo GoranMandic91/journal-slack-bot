@@ -41,12 +41,11 @@ export class SettingsConversation {
                         }, async (message: ISlackMessage, convo) => {
                             const address = await geocodeService.geocode(message.text);
                             if (address) {
-                                this.user.address = address;
                                 this.saveSettings(bot, message, convo, 'address', address);
                             } else {
                                 convo.say({ text: 'Given location is not valid!' });
+                                convo.next();
                             }
-                            convo.next();
                         }, {}, 'address_thread');
 
                         convo.addQuestion({
@@ -61,16 +60,37 @@ export class SettingsConversation {
                             }, (message: ISlackMessage, convo) => {
                                 const hourRepeat = message.actions[0].selected_options[0].value;
                                 this.pattern = '00 00 ' + hourRepeat.split(':')[0] + this.pattern;
-                                this.user.cron_pattern = this.pattern;
                                 this.saveSettings(bot, message, convo, 'cron_pattern', this.pattern);
                             });
                             convo.next();
                         }, {}, 'time_thread');
 
-                        convo.addMessage({
-                            text: 'Enable thread.',
-                            action: 'stop', // this marks the converation as unsuccessful
-                        }, 'enable_thread');
+                        convo.beforeThread('enable_thread', async (convo, next) => {
+                            if (this.user.active_journal) {
+                                await this.saveSettings(bot, message, convo, 'active_journal', false);
+                                convo.addMessage({
+                                    text: 'You succesfully disable journal.',
+                                    action: 'default',
+                                }, 'enable_thread');
+                                convo.next();
+                            } else {
+                                if (!this.user.address && !this.user.cron_pattern) {
+                                    convo.addMessage({
+                                        text: 'You must first set address and time settings and then enable journal.',
+                                        action: 'default',
+                                    }, 'enable_thread');
+                                    convo.next();
+                                } else {
+                                    await this.saveSettings(bot, message, convo, 'active_journal', true);
+                                    convo.addMessage({
+                                        text: 'You succesfully enable journal.',
+                                        action: 'stop',
+                                    }, 'enable_thread');
+                                    convo.next();
+                                }
+                            }
+                            next('');
+                        });
 
                         convo.addMessage({
                             text: 'Come again at any time if you change your mind about it. Just type `settings`.',
@@ -93,13 +113,14 @@ export class SettingsConversation {
         await this.controller.storage.users.get(message.user, async (err, user: ISlackUser) => {
             if (!user) {
                 await bot.api.users.info({ user: message.user }, (error, response) => {
-                    user = response.user;
-                    user[settingsName] = settingsValue;
-                    this.saveUser(user, convo);
+                    this.user = response.user;
+                    this.user[settingsName] = settingsValue;
+                    this.saveUser(this.user, convo);
                 });
             } else {
-                user[settingsName] = settingsValue;
-                this.saveUser(user, convo);
+                this.user = user;
+                this.user[settingsName] = settingsValue;
+                this.saveUser(this.user, convo);
             }
         });
     }
