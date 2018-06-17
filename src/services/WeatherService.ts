@@ -58,7 +58,7 @@ export class WeatherService {
     }
 
     public formatWeather(weather: IWeather, address: string) {
-        const attachments = [{
+        const attachments = {
             thumb_url: weatherService.getIconUrl(weather.icon),
             color: '#F35A00',
             mrkdwn_in: ['fields'],
@@ -102,7 +102,7 @@ export class WeatherService {
             footer: `<https://darksky.net/details/${weather.latitude},${weather.longitude}/${moment(weather.time * 1000).format('YYYY-MM-DD')}/ca12/en| Dark Sky>`,
             footer_icon: 'http://haverzine.com/wp-content/uploads/2014/01/Dark-Sky-logo-on-mevvy.com_.png',
             ts: (weather.time).toString(),
-        }];
+        };
 
         return attachments;
     }

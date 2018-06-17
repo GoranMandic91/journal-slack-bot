@@ -85,9 +85,11 @@ export class AppRegistration {
             if (err) {
                 console.log(err);
             } else {
-                response.members.forEach((member) => {
+                response.members.forEach((member: ISlackUser) => {
                     if (!member.is_bot && member.id !== 'USLACKBOT') {
-                        member.tasks = [];
+                        member.cron = null;
+                        member.address = null;
+                        member.is_active_journal = false;
                         this.controller.storage.users.save(member);
                     }
                 });
@@ -110,11 +112,13 @@ export class AppRegistration {
             if (err) {
                 console.log(err);
             } else {
-                response.members.forEach((member) => {
+                response.members.forEach((member: ISlackUser) => {
                     if (!member.is_bot && member.id !== 'USLACKBOT') {
                         this.controller.storage.users.get(member.id, (err, user: ISlackUser) => {
                             if (!user) {
-                                member.tasks = [];
+                                member.cron = null;
+                                member.address = null;
+                                member.is_active_journal = false;
                                 this.controller.storage.users.save(member);
                             }
                         });

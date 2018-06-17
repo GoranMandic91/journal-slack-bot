@@ -1,3 +1,4 @@
+import { CronConversation } from './conversations/CronConversation';
 import { AppRegistration } from './components/AppRegistration';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageMiddleware } from './middlewares/InteractiveMessageMiddleware';
@@ -28,12 +29,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
-  console.log('~~~~~~~~~~');
-  console.log('Journal Slack Bot');
-  console.log('Execute your bot application like this:');
-  console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 node bot.js');
-  console.log('Get Slack app credentials here: https://api.slack.com/apps');
-  console.log('~~~~~~~~~~');
+  debug('~~~~~~~~~~');
+  debug('Journal Slack Bot');
+  debug('Execute your bot application like this:');
+  debug('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 node bot.js');
+  debug('Get Slack app credentials here: https://api.slack.com/apps');
+  debug('~~~~~~~~~~');
 }
 
 const botOptions = {
@@ -70,10 +71,12 @@ const partingConversation = new PartingConversation(controller);
 const gratitudeConversation = new GratitudeConversation(controller);
 
 const settingsConversation = new SettingsConversation(controller);
+const cronConversation = new CronConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
-const channelJoinSkill = new ChannelJoinSkill(controller);
 const interactiveMessageMiddleware = new InteractiveMessageMiddleware(controller);
+
+const channelJoinSkill = new ChannelJoinSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
 const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
