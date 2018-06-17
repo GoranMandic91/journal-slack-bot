@@ -7,7 +7,7 @@ export const DAY_REPEAT = ['every day', 'every Monday', 'every Tuesday', 'every 
 
 export class SettingsConversation {
 
-    private controller: SlackController;
+    private controller: any;
     private pattern: any;
     private user: ISlackUser;
 
@@ -137,8 +137,9 @@ export class SettingsConversation {
             if (err) {
                 convo.say({ text: 'I experienced an error saving settings:' + err });
             } else {
-                convo.say({ text: 'Settings saved succesfully!', action: 'default', });
+                this.controller.trigger('cron:restart', [user, convo]);
                 convo.setVar('user', user);
+                convo.say({ text: 'Settings saved succesfully!', action: 'default', });
             }
         });
         convo.next();

@@ -3,7 +3,7 @@ import weatherService from '../services/WeatherService';
 import newsService from '../services/NewsService';
 import * as moment from 'moment';
 
-const CronJob = require('cron').CronJob;
+const Cron = require('cron').CronJob;
 
 export class CronConversation {
 
@@ -12,11 +12,13 @@ export class CronConversation {
     constructor(controller: any) {
         this.controller = controller;
         this.configure();
+        this.configureCronRestart();
     }
 
     public configure() {
 
         this.controller.storage.teams.find({}, (err, teams) => {
+            console.log('CRON INITIALIZATION');
             if (err) {
                 console.log(err);
             } else {
@@ -26,7 +28,7 @@ export class CronConversation {
 
                         users.forEach((user: ISlackUser) => {
                             if (user.is_active_journal && user.cron && user.cron.pattern) {
-                                const temp = new CronJob(user.cron.pattern, () => {
+                                const temp = new Cron(user.cron.pattern, () => {
                                     bot.api.im.open({ user: user.id }, (err, response) => {
                                         if (err) {
                                             bot.botkit.log('Failed to open IM with user', err);
@@ -71,6 +73,12 @@ export class CronConversation {
                     });
                 });
             }
+        });
+    }
+
+    public configureCronRestart() {
+        this.controller.on('cron:restart', () => {
+            this.configure();
         });
     }
 }
