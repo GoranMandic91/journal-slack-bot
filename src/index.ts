@@ -4,13 +4,9 @@ import { AppServer } from './components/AppServer';
 import { InteractiveMessageMiddleware } from './middlewares/InteractiveMessageMiddleware';
 import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
 import { DebugMiddleware } from './middlewares/DebugMiddleware';
-import { SampleHearsSkill } from './skills/SampleHearsSkill';
-import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
 import { JournalConversation } from './conversations/JournalConversation';
 import { WeatherConversation } from './conversations/WeatherConversation';
 import { NewsConversation } from './conversations/NewsConversation';
-import { SampleConversationSkill } from './skills/SampleConversationSkill';
-import { SampleTaskbotSkill } from './skills/SampleTaskbotSkill';
 import { UserJoinConversation } from './conversations/UserJoinConversation';
 import { DefaultConversation } from './conversations/DefaultConversation';
 import { HelpConversation } from './conversations/HelpConversation';
@@ -78,11 +74,6 @@ const settingsConversation = new SettingsConversation(controller);
 const cronConversation = new CronConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
-
-const channelJoinSkill = new ChannelJoinSkill(controller);
-const sampleConversationSkill = new SampleConversationSkill(controller);
-const sampleHearsSkill = new SampleHearsSkill(controller);
-const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
 
 const defaultConversation = new DefaultConversation(controller);
 console.log('Journal Slack bot started!');
