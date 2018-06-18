@@ -11,7 +11,7 @@ import { WeatherConversation } from './conversations/WeatherConversation';
 import { NewsConversation } from './conversations/NewsConversation';
 import { SampleConversationSkill } from './skills/SampleConversationSkill';
 import { SampleTaskbotSkill } from './skills/SampleTaskbotSkill';
-import { SampleEventsSkill } from './skills/SampleEventsSkill';
+import { UserJoinConversation } from './conversations/UserJoinConversation';
 import { DefaultConversation } from './conversations/DefaultConversation';
 import { HelpConversation } from './conversations/HelpConversation';
 import { GreetingConversation } from './conversations/GreetingConversation';
@@ -62,6 +62,7 @@ const appRegistration = new AppRegistration(controller);
 const sampleMiddleware = new SampleMiddleware(controller);
 
 const welcomeAboardConversation = new WelcomeAboardConversation(controller);
+const userJoinConversation = new UserJoinConversation(controller);
 const helpConversation = new HelpConversation(controller);
 
 const newsConversation = new NewsConversation(controller);
@@ -78,7 +79,6 @@ const interactiveMessageMiddleware = new InteractiveMessageMiddleware(controller
 
 const channelJoinSkill = new ChannelJoinSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);
-const sampleEventsSkill = new SampleEventsSkill(controller);
 const sampleHearsSkill = new SampleHearsSkill(controller);
 const sampleTaskbotSkill = new SampleTaskbotSkill(controller);
 
