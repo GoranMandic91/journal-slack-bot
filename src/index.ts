@@ -3,7 +3,7 @@ import { AppRegistration } from './components/AppRegistration';
 import { AppServer } from './components/AppServer';
 import { InteractiveMessageMiddleware } from './middlewares/InteractiveMessageMiddleware';
 import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
-import { SampleMiddleware } from './middlewares/SampleMiddleware';
+import { DebugMiddleware } from './middlewares/DebugMiddleware';
 import { SampleHearsSkill } from './skills/SampleHearsSkill';
 import { ChannelJoinSkill } from './skills/ChannelJoinSkill';
 import { JournalConversation } from './conversations/JournalConversation';
@@ -18,6 +18,7 @@ import { GreetingConversation } from './conversations/GreetingConversation';
 import { PartingConversation } from './conversations/PartingConversation';
 import { GratitudeConversation } from './conversations/GratitudeConversation';
 import { SettingsConversation } from './conversations/SettingsConversation';
+import { WitMiddleware } from './middlewares/WitMiddleware';
 import * as Botkit from 'botkit';
 import * as mongoDB from 'botkit-storage-mongo';
 import * as env from 'node-env-file';
@@ -58,8 +59,10 @@ const appRegistration = new AppRegistration(controller);
 // uncomment next line if you want to use RTM
 // const rtmManager = new RtmManager(controller);
 
-// Send an onboarding message when a new team joins
-const sampleMiddleware = new SampleMiddleware(controller);
+// middlewares
+const witMiddleware = new WitMiddleware(controller);
+const debugMiddleware = new DebugMiddleware(controller);
+const interactiveMessageMiddleware = new InteractiveMessageMiddleware(controller);
 
 const welcomeAboardConversation = new WelcomeAboardConversation(controller);
 const userJoinConversation = new UserJoinConversation(controller);
@@ -75,7 +78,6 @@ const settingsConversation = new SettingsConversation(controller);
 const cronConversation = new CronConversation(controller);
 
 const journalConversation = new JournalConversation(controller);
-const interactiveMessageMiddleware = new InteractiveMessageMiddleware(controller);
 
 const channelJoinSkill = new ChannelJoinSkill(controller);
 const sampleConversationSkill = new SampleConversationSkill(controller);

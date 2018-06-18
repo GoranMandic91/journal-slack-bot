@@ -1,17 +1,7 @@
 import { SlackController } from 'botkit';
 import * as prettyjson from 'prettyjson';
-import * as Wit from 'botkit-middleware-witai';
-import * as env from 'node-env-file';
 
-if (process.env.NODE_ENV !== 'production') {
-    env('./.env');
-}
-
-const wit = Wit({
-    token: process.env.wit_access_token,
-});
-
-export class SampleMiddleware {
+export class DebugMiddleware {
 
     private controller: SlackController;
 
@@ -33,8 +23,6 @@ export class SampleMiddleware {
             next();
 
         });
-
-        this.controller.middleware.receive.use(wit.receive);
 
         this.controller.middleware.send.use((bot, message, next) => {
 
