@@ -14,11 +14,11 @@ export class HelpConversation {
         this.controller.hears(['help'], 'direct_message', (bot, message) => {
             bot.createConversation(message, (err, convo) => {
                 if (!err) {
-                    convo.say('Type:');
+                    convo.say('Type');
                     convo.say('- `news` for news :point_up::skin-tone-2:');
                     convo.say('- `weather` to get weather forecast :v::skin-tone-2:');
                     convo.say('- `journal` to get news and weather forecast :crossed_fingers::skin-tone-2:');
-                    convo.say('- `settings` to edit settings to get daily or weekly dose of journal');
+                    convo.say('- `settings` to edit settings to get daily or weekly dose of journal :gear:');
 
                     convo.activate();
                 }

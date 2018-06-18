@@ -60,7 +60,7 @@ export class WeatherService {
     public formatWeather(weather: IWeather, address: string) {
         const attachments = {
             thumb_url: weatherService.getIconUrl(weather.icon),
-            color: '#F35A00',
+            color: '#28b395',
             mrkdwn_in: ['fields'],
             fields: [
                 {

@@ -13,29 +13,17 @@ export class InteractiveMessageMiddleware {
 
         this.controller.middleware.receive.use((bot, message: ISlackMessage, next) => {
             if (message.type === 'interactive_message_callback') {
-                if (message.actions[0].name.match(/^day_list$/) || message.actions[0].name.match(/^hour_list$/)) {
-                    const reply = message.original_message;
-
-                    for (let a = 0; a < reply.attachments.length; a++) {
-                        reply.attachments[a].actions = null;
-                    }
-
-                    let person = '<@' + message.user + '>';
-                    if (message.channel[0] === 'D') {
-                        person = 'You';
-                    }
-
-                    reply.attachments.push(
-                        {
-                            text: person + ' choosed `' + message.actions[0].selected_options[0].value + '`',
-                        }
-                    );
-
-                    bot.replyInteractive(message, reply);
-
+                if (message.actions[0].name.match(/^day_list$/)) {
+                    bot.replyInteractive(message, {
+                        text: 'Choosed `' + message.actions[0].selected_options[0].value + '`',
+                    });
+                }
+                if (message.actions[0].name.match(/^hour_list$/)) {
+                    bot.replyInteractive(message, {
+                        text: 'Choosed `at ' + message.actions[0].selected_options[0].value + '`',
+                    });
                 }
             }
-
             next();
 
         });
@@ -43,14 +31,9 @@ export class InteractiveMessageMiddleware {
         this.controller.middleware.receive.use((bot, message: ISlackMessage, next) => {
             if (message.type === 'interactive_message_callback') {
                 if (message.actions[0].name.match(/^global_list$/)) {
-                    const reply = message.original_message;
-
-                    reply.attachments = [{
-                        color: message.actions[0].value === 'quit settings' ? '#F35A00' : '#28b395',
-                        text: 'You choose to ' + message.actions[0].value,
-                    }];
-
-                    bot.replyInteractive(message, reply);
+                    bot.replyInteractive(message, {
+                        text: 'Selected ' + message.actions[0].value,
+                    });
                 }
             }
             next();

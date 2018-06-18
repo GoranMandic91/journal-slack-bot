@@ -28,7 +28,7 @@ export class WelcomeAboardConversation {
                                 console.log(err);
                             } else {
                                 convo.say('I am a bot that has just joined your team');
-                                convo.say('Soon i\'ll be able to do some cool stuff! :smile:');
+                                convo.say('To see what can I do, type `help` :smile:');
                             }
                         });
                     });

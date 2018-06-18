@@ -31,7 +31,7 @@ export class NewsService {
         const attachments = news.map((article: INews) => {
             return {
                 thumb_url: article.urlToImage,
-                color: '#F35A00',
+                color: '#28b395',
                 fields: [
                     {
                         title: article.title,

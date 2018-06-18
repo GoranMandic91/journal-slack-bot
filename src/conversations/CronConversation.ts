@@ -8,9 +8,11 @@ const Cron = require('cron').CronJob;
 export class CronConversation {
 
     private controller: any;
+    private runningCrons: any[];
 
     constructor(controller: any) {
         this.controller = controller;
+        this.runningCrons = [];
         this.configure();
         this.configureCronRestart();
     }
@@ -18,7 +20,7 @@ export class CronConversation {
     public configure() {
 
         this.controller.storage.teams.find({}, (err, teams) => {
-            console.log('CRON INITIALIZATION');
+            console.log('initializing cron...');
             if (err) {
                 console.log(err);
             } else {
@@ -28,7 +30,7 @@ export class CronConversation {
 
                         users.forEach((user: ISlackUser) => {
                             if (user.is_active_journal && user.cron && user.cron.pattern) {
-                                const temp = new Cron(user.cron.pattern, () => {
+                                const userCron = new Cron(user.cron.pattern, () => {
                                     bot.api.im.open({ user: user.id }, (err, response) => {
                                         if (err) {
                                             bot.botkit.log('Failed to open IM with user', err);
@@ -68,6 +70,7 @@ export class CronConversation {
                                         });
                                     });
                                 }, null, true, 'Europe/Belgrade');
+                                this.runningCrons.push(userCron);
                             }
                         });
                     });
@@ -78,6 +81,11 @@ export class CronConversation {
 
     public configureCronRestart() {
         this.controller.on('cron:restart', () => {
+            this.runningCrons.forEach((cron) => {
+                cron.stop();
+                cron = null;
+            });
+            this.runningCrons = [];
             this.configure();
         });
     }
