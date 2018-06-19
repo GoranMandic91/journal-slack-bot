@@ -1,6 +1,18 @@
 import { ISlackMessage } from '../models/Slack';
 import { SlackController } from 'botkit';
 
+const firstGratitude = [
+    'You\'re welcome. :sunglasses:',
+    'No problem. :slightly_smiling_face:',
+    'It\'s alright. :wink:',
+    'Anytime! :hugging_face:',
+];
+const secondGratitude = [
+    'I\'m always here for you!',
+    'It\'s my pleasure to help you!',
+    'Thanks for getting in touch.',
+    'I\'m happy to help.',
+];
 export class GratitudeConversation {
 
     private controller: SlackController;
@@ -16,8 +28,8 @@ export class GratitudeConversation {
         this.controller.hears(['gratitude'], 'direct_message', this.customHearsHandler, (bot, message: any) => {
 
             bot.createConversation(message, async (err, convo) => {
-                convo.say({ text: 'You\'re welcome :sunglasses:' });
-                convo.say({ text: 'I\'m always here for you!' });
+                convo.say({ text: firstGratitude[Math.floor(Math.random() * 4)] });
+                convo.say({ text: secondGratitude[Math.floor(Math.random() * 4)] });
                 convo.activate();
             });
         });
