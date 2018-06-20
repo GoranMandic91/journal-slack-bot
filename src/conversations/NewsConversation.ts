@@ -20,8 +20,8 @@ export class NewsConversation {
 
                 let address;
                 let news_type;
-                let addressEntity = this.getAddressEntity(message.intents);
-                const newsTypeEntity = this.getNewsTypeEntity(message.intents);
+                let addressEntity = this.getAddressEntity(message.entities);
+                const newsTypeEntity = this.getNewsTypeEntity(message.entities);
 
                 if (!addressEntity) {
 
@@ -30,8 +30,8 @@ export class NewsConversation {
                     convo.ask({
                         text: 'Give me country name from which you want me to get you news :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
-                        addressEntity = this.getAddressEntity(response.intents);
-                        news_type = this.getNewsTypeEntity(response.intents);
+                        addressEntity = this.getAddressEntity(response.entities);
+                        news_type = this.getNewsTypeEntity(response.entities);
 
                         news_type = news_type ? news_type : newsTypeEntity;
                         address = await geocodeService.geocode(addressEntity);
@@ -84,28 +84,26 @@ export class NewsConversation {
         }
     }
 
-    public customHearsHandler(test: string, message: ISlackMessage) {
+    public customHearsHandler(pattern: string, message: ISlackMessage) {
         let isMatch = false;
-        if (message.intents && message.intents[0] && message.intents[0].entities && message.intents[0].entities.intent) {
-            message.intents[0].entities.intent.forEach((intent) => {
-                isMatch = intent.value.match(test);
-            });
+        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
+            isMatch = true;
         }
         return isMatch;
     }
 
-    private getAddressEntity(intents: any) {
+    private getAddressEntity(entities: any) {
         let addressEntity = '';
-        if (intents && intents[0] && intents[0].entities && intents[0].entities.location && intents[0].entities.location[0]) {
-            addressEntity = intents[0].entities.location[0].value;
+        if (entities && entities.location && entities.location[0]) {
+            addressEntity = entities.location[0].value;
         }
         return addressEntity;
     }
 
-    private getNewsTypeEntity(intents: any): CategoryNews {
+    private getNewsTypeEntity(entities: any): CategoryNews {
         let newsTypeEntity = '';
-        if (intents && intents[0] && intents[0].entities && intents[0].entities.news_type && intents[0].entities.news_type[0]) {
-            newsTypeEntity = intents[0].entities.news_type[0].value;
+        if (entities && entities.location && entities.news_type[0]) {
+            newsTypeEntity = entities.news_type[0].value;
         }
         return newsTypeEntity as CategoryNews;
     }

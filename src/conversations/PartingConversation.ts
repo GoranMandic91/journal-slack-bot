@@ -36,12 +36,10 @@ export class PartingConversation {
 
     }
 
-    public customHearsHandler(test: string, message: ISlackMessage) {
+    public customHearsHandler(pattern: string, message: ISlackMessage) {
         let isMatch = false;
-        if (message.intents && message.intents[0] && message.intents[0].entities && message.intents[0].entities.intent) {
-            message.intents[0].entities.intent.forEach((intent) => {
-                isMatch = intent.value.match(test);
-            });
+        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
+            isMatch = true;
         }
         return isMatch;
     }

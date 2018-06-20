@@ -1,13 +1,13 @@
 import { SlackController } from 'botkit';
-import * as Wit from 'botkit-middleware-witai';
+import * as Wit from 'botkit-witai';
 import * as env from 'node-env-file';
 
 if (process.env.NODE_ENV !== 'production') {
     env('./.env');
 }
 
-const wit = Wit({
-    token: process.env.wit_access_token,
+export const wit = Wit({
+    accessToken: process.env.wit_access_token,
 });
 
 export class WitMiddleware {

@@ -20,8 +20,8 @@ export class WeatherConversation {
 
             bot.createConversation(message, async (err, convo) => {
 
-                let addressEntity = this.getAddressEntity(message.intents);
-                const date = this.getDateEntity(message.intents);
+                let addressEntity = this.getAddressEntity(message.entities);
+                const date = this.getDateEntity(message.entities);
                 let address;
                 let time;
 
@@ -32,7 +32,7 @@ export class WeatherConversation {
                     convo.ask({
                         text: 'Please give me location for weather forecast :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
-                        addressEntity = this.getAddressEntity(response.intents);
+                        addressEntity = this.getAddressEntity(response.entities);
                         address = await geocodeService.geocode(addressEntity);
                         time = date ? moment(date) : moment();
                         this.send(convo, address, time, true);
@@ -84,28 +84,26 @@ export class WeatherConversation {
         }
     }
 
-    public customHearsHandler(test: string, message: ISlackMessage) {
+    public customHearsHandler(pattern: string, message: ISlackMessage) {
         let isMatch = false;
-        if (message.intents && message.intents[0] && message.intents[0].entities && message.intents[0].entities.intent) {
-            message.intents[0].entities.intent.forEach((intent) => {
-                isMatch = intent.value.match(test);
-            });
+        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
+            isMatch = true;
         }
         return isMatch;
     }
 
-    private getAddressEntity(intents: any) {
+    private getAddressEntity(entities: any) {
         let addressEntity = '';
-        if (intents && intents[0] && intents[0].entities && intents[0].entities.location && intents[0].entities.location[0]) {
-            addressEntity = intents[0].entities.location[0].value;
+        if (entities && entities.location && entities.location[0]) {
+            addressEntity = entities.location[0].value;
         }
         return addressEntity;
     }
 
-    private getDateEntity(intents: any) {
+    private getDateEntity(entities: any) {
         let dateEntity = '';
-        if (intents && intents[0] && intents[0].entities && intents[0].entities.datetime && intents[0].entities.datetime[0]) {
-            dateEntity = intents[0].entities.datetime[0].value;
+        if (entities && entities.location && entities.datetime[0]) {
+            dateEntity = entities.datetime[0].value;
         }
         return dateEntity;
     }

@@ -95,7 +95,7 @@ export interface ISlackMessage extends SlackMessage {
     actions?: IAction[];
     original_message?: ISlackMessage;
     attachments?: ISlackAttachment[];
-    intents?: any;
+    entities?: any;
 }
 
 export interface ISlackAttachment extends SlackAttachment {
