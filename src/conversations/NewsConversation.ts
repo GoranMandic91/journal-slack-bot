@@ -102,7 +102,7 @@ export class NewsConversation {
 
     private getNewsTypeEntity(entities: any): CategoryNews {
         let newsTypeEntity = '';
-        if (entities && entities.location && entities.news_type[0]) {
+        if (entities && entities.news_type && entities.news_type[0]) {
             newsTypeEntity = entities.news_type[0].value;
         }
         return newsTypeEntity as CategoryNews;
