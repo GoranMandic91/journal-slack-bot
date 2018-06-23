@@ -19,10 +19,8 @@ export class NewsConversation {
         this.controller.hears(['news'], 'direct_message', witService.hears, (bot, message: ISlackMessage) => {
             bot.createConversation(message, async (err, convo) => {
 
-                let address;
-                let news_type;
                 let addressEntity = witService.getAddressEntity(message.entities);
-                const newsTypeEntity = witService.getNewsTypeEntity(message.entities);
+                const newsTypeEntity1 = witService.getNewsTypeEntity(message.entities);
 
                 if (!addressEntity) {
 
@@ -32,18 +30,20 @@ export class NewsConversation {
                         text: 'Give me country name from which you want me to get you news :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = witService.getAddressEntity(response.entities);
-                        news_type = witService.getNewsTypeEntity(response.entities);
+                        const address = await geocodeService.geocode(addressEntity);
 
-                        news_type = news_type ? news_type : newsTypeEntity;
-                        address = await geocodeService.geocode(addressEntity);
-                        this.send(convo, address, true, news_type);
+                        let newsTypeEntity2 = witService.getNewsTypeEntity(response.entities);
+                        newsTypeEntity2 = newsTypeEntity2 ? newsTypeEntity2 : newsTypeEntity1;
+
+                        this.send(convo, address, true, newsTypeEntity2);
                     });
                     convo.activate();
 
                 } else {
 
-                    address = await geocodeService.geocode(addressEntity);
-                    this.send(convo, address, false, newsTypeEntity);
+                    const address = await geocodeService.geocode(addressEntity);
+                    this.send(convo, address, false, newsTypeEntity1);
+
                 }
 
             });
@@ -65,7 +65,7 @@ export class NewsConversation {
             await newsService.get(address.country_code, news_type).then((articles) => {
 
                 convo.addMessage({
-                    text: 'I\'m getting news for you, please wait for a second :simple_smile:',
+                    text: `I\'m getting ${news_type} news for you, please wait for a second :simple_smile:`,
                     action: 'get_news',
                 }, '');
 

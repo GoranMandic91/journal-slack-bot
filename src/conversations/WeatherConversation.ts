@@ -22,9 +22,7 @@ export class WeatherConversation {
             bot.createConversation(message, async (err, convo) => {
 
                 let addressEntity = witService.getAddressEntity(message.entities);
-                const date = witService.getDateTimeEntity(message.entities);
-                let address;
-                let time;
+                const dateTimeEntity = witService.getDateTimeEntity(message.entities);
 
                 if (!addressEntity) {
 
@@ -34,18 +32,16 @@ export class WeatherConversation {
                         text: 'Please give me location for weather forecast :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = witService.getAddressEntity(response.entities);
-                        address = await geocodeService.geocode(addressEntity);
-                        time = date ? moment(date) : moment();
+                        const address = await geocodeService.geocode(addressEntity);
+                        const time = dateTimeEntity ? moment(dateTimeEntity) : moment();
                         this.send(convo, address, time, true);
                     });
                     convo.activate();
 
                 } else {
-
-                    address = await geocodeService.geocode(addressEntity);
-                    time = date ? moment(date) : moment();
+                    const address = await geocodeService.geocode(addressEntity);
+                    const time = dateTimeEntity ? moment(dateTimeEntity) : moment();
                     this.send(convo, address, time, false);
-
                 }
 
             });
@@ -61,7 +57,7 @@ export class WeatherConversation {
         } else {
             convo.addMessage({
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
-            }, 'end-conversation');
+            }, 'end_conversation');
 
             await weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
 
@@ -74,7 +70,7 @@ export class WeatherConversation {
 
                 convo.addMessage({
                     attachments,
-                    action: 'end-conversation',
+                    action: 'end_conversation',
                 }, 'get_weather');
             });
         }

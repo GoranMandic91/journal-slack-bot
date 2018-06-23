@@ -12,21 +12,24 @@ const newsApiKey = process.env.news_api_key;
 
 export class NewsService {
 
-    public get(country: string, category?: CategoryNews): Promise<INews[]> {
+    public async get(country: string, category?: CategoryNews): Promise<INews[]> {
+
         let url = `${newsApi}/top-headlines?country=${country}&pageSize=5&apiKey=${newsApiKey}`;
         if (category) {
             url = `${newsApi}/top-headlines?country=${country}&category=${category}&pageSize=5&apiKey=${newsApiKey}`;
         }
+
         const options = {
             method: 'GET',
             uri: url,
             json: true,
         };
-        return rp(options)
-            .then((response) => {
-                return response.articles;
-            });
+
+        const response = await rp(options);
+        return response.articles;
+
     }
+
     public formatNews(news: INews[]) {
         const attachments = news.map((article: INews) => {
             return {

@@ -7,8 +7,8 @@ if (process.env.NODE_ENV !== 'production') {
     env('./.env');
 }
 
-const weatherApi = 'https://api.darksky.net/forecast';
 const weatherApiKey = process.env.weather_api_key;
+const weatherApi = 'https://api.darksky.net/forecast';
 const weatherIconUrl = 'https://uds-static.api.aero/weather/icon/lg/';
 
 enum WeatherIcons {
@@ -26,31 +26,20 @@ enum WeatherIcons {
 
 export class WeatherService {
 
-    public get(): Promise<IWeather> {
-        const url = `${weatherApi}/${weatherApiKey}/44.80401,20.46513?units=si`;
-        const options = {
-            method: 'GET',
-            uri: url,
-            json: true,
-        };
-        return rp(options)
-            .then((response) => {
-                return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
-            });
-    }
+    public async getByLocationAndTime(lat: number, lng: number, date: any): Promise<IWeather> {
 
-    public getByLocationAndTime(lat: number, lng: number, date: any): Promise<IWeather> {
         const unixtime = date.unix();
         const url = `${weatherApi}/${weatherApiKey}/${lat},${lng},${unixtime}?units=si`;
+
         const options = {
             method: 'GET',
             uri: url,
             json: true,
         };
-        return rp(options)
-            .then((response) => {
-                return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
-            });
+
+        const response = await rp(options);
+        return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
+
     }
 
     public getIconUrl(icon: string): string {
