@@ -102,7 +102,7 @@ export class WeatherConversation {
 
     private getDateEntity(entities: any) {
         let dateEntity = '';
-        if (entities && entities.location && entities.datetime[0]) {
+        if (entities && entities.datetime && entities.datetime[0]) {
             dateEntity = entities.datetime[0].value;
         }
         return dateEntity;
