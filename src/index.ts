@@ -4,7 +4,6 @@ import { AppServer } from './components/AppServer';
 import { InteractiveMessageMiddleware } from './middlewares/InteractiveMessageMiddleware';
 import { WelcomeAboardConversation } from './conversations/WelcomeAboardConversation';
 import { DebugMiddleware } from './middlewares/DebugMiddleware';
-import { JournalConversation } from './conversations/JournalConversation';
 import { WeatherConversation } from './conversations/WeatherConversation';
 import { NewsConversation } from './conversations/NewsConversation';
 import { UserJoinConversation } from './conversations/UserJoinConversation';
@@ -72,8 +71,6 @@ const gratitudeConversation = new GratitudeConversation(controller);
 
 const settingsConversation = new SettingsConversation(controller);
 const cronConversation = new CronConversation(controller);
-
-const journalConversation = new JournalConversation(controller);
 
 const defaultConversation = new DefaultConversation(controller);
 console.log('Journal Slack bot started!');
