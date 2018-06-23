@@ -1,6 +1,7 @@
 import { ISlackMessage } from '../models/Slack';
 import { SlackController } from 'botkit';
 import { wit } from '../middlewares/WitMiddleware';
+import witService from '../services/WitService';
 
 const firstGreeting = [
     'Hello :man-raising-hand::skin-tone-2:',
@@ -26,7 +27,7 @@ export class GreetingConversation {
 
     public configure() {
 
-        this.controller.hears(['greeting'], 'direct_message', this.customHearsHandler, (bot, message: any) => {
+        this.controller.hears(['greeting'], 'direct_message', witService.hears, (bot, message: any) => {
 
             bot.createConversation(message, async (err, convo) => {
 
@@ -38,11 +39,4 @@ export class GreetingConversation {
 
     }
 
-    public customHearsHandler(pattern: string, message: ISlackMessage) {
-        let isMatch = false;
-        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
-            isMatch = true;
-        }
-        return isMatch;
-    }
 }

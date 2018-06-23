@@ -1,9 +1,10 @@
 import { CategoryNews } from './../models/news';
 import { SlackController, Conversation } from 'botkit';
-import { INews, CountryList } from '../models/news';
+import { CountryList } from '../models/news';
 import newsService from '../services/NewsService';
 import { ISlackMessage } from '../models/Slack';
 import geocodeService from '../services/GeocodeService';
+import witService from '../services/WitService';
 
 export class NewsConversation {
 
@@ -15,13 +16,13 @@ export class NewsConversation {
     }
 
     public configure() {
-        this.controller.hears(['news'], 'direct_message', this.customHearsHandler, (bot, message: ISlackMessage) => {
+        this.controller.hears(['news'], 'direct_message', witService.hears, (bot, message: ISlackMessage) => {
             bot.createConversation(message, async (err, convo) => {
 
                 let address;
                 let news_type;
-                let addressEntity = this.getAddressEntity(message.entities);
-                const newsTypeEntity = this.getNewsTypeEntity(message.entities);
+                let addressEntity = witService.getAddressEntity(message.entities);
+                const newsTypeEntity = witService.getNewsTypeEntity(message.entities);
 
                 if (!addressEntity) {
 
@@ -30,8 +31,8 @@ export class NewsConversation {
                     convo.ask({
                         text: 'Give me country name from which you want me to get you news :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
-                        addressEntity = this.getAddressEntity(response.entities);
-                        news_type = this.getNewsTypeEntity(response.entities);
+                        addressEntity = witService.getAddressEntity(response.entities);
+                        news_type = witService.getNewsTypeEntity(response.entities);
 
                         news_type = news_type ? news_type : newsTypeEntity;
                         address = await geocodeService.geocode(addressEntity);
@@ -82,30 +83,6 @@ export class NewsConversation {
         } else {
             convo.activate();
         }
-    }
-
-    public customHearsHandler(pattern: string, message: ISlackMessage) {
-        let isMatch = false;
-        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
-            isMatch = true;
-        }
-        return isMatch;
-    }
-
-    private getAddressEntity(entities: any) {
-        let addressEntity = '';
-        if (entities && entities.location && entities.location[0]) {
-            addressEntity = entities.location[0].value;
-        }
-        return addressEntity;
-    }
-
-    private getNewsTypeEntity(entities: any): CategoryNews {
-        let newsTypeEntity = '';
-        if (entities && entities.news_type && entities.news_type[0]) {
-            newsTypeEntity = entities.news_type[0].value;
-        }
-        return newsTypeEntity as CategoryNews;
     }
 
 }

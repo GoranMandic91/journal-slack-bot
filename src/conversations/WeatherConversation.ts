@@ -2,6 +2,7 @@ import { ISlackMessage } from '../models/Slack';
 import { SlackController, Conversation } from 'botkit';
 import weatherService from '../services/WeatherService';
 import geocodeService from '../services/GeocodeService';
+import witService from '../services/WitService';
 import * as moment from 'moment';
 
 export class WeatherConversation {
@@ -16,12 +17,12 @@ export class WeatherConversation {
 
     public configure() {
 
-        this.controller.hears(['weather'], 'direct_message', this.customHearsHandler, (bot, message: any) => {
+        this.controller.hears(['weather'], 'direct_message', witService.hears, (bot, message: any) => {
 
             bot.createConversation(message, async (err, convo) => {
 
-                let addressEntity = this.getAddressEntity(message.entities);
-                const date = this.getDateEntity(message.entities);
+                let addressEntity = witService.getAddressEntity(message.entities);
+                const date = witService.getDateTimeEntity(message.entities);
                 let address;
                 let time;
 
@@ -32,7 +33,7 @@ export class WeatherConversation {
                     convo.ask({
                         text: 'Please give me location for weather forecast :slightly_smiling_face:',
                     }, async (response: ISlackMessage, convo) => {
-                        addressEntity = this.getAddressEntity(response.entities);
+                        addressEntity = witService.getAddressEntity(response.entities);
                         address = await geocodeService.geocode(addressEntity);
                         time = date ? moment(date) : moment();
                         this.send(convo, address, time, true);
@@ -84,27 +85,4 @@ export class WeatherConversation {
         }
     }
 
-    public customHearsHandler(pattern: string, message: ISlackMessage) {
-        let isMatch = false;
-        if (message.entities && message.entities.intent && message.entities.intent[0] && message.entities.intent[0].value && message.entities.intent[0].value === pattern[0]) {
-            isMatch = true;
-        }
-        return isMatch;
-    }
-
-    private getAddressEntity(entities: any) {
-        let addressEntity = '';
-        if (entities && entities.location && entities.location[0]) {
-            addressEntity = entities.location[0].value;
-        }
-        return addressEntity;
-    }
-
-    private getDateEntity(entities: any) {
-        let dateEntity = '';
-        if (entities && entities.datetime && entities.datetime[0]) {
-            dateEntity = entities.datetime[0].value;
-        }
-        return dateEntity;
-    }
 }
