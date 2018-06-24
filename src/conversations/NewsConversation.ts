@@ -35,14 +35,16 @@ export class NewsConversation {
                         let newsTypeEntity2 = witService.getNewsTypeEntity(response.entities);
                         newsTypeEntity2 = newsTypeEntity2 ? newsTypeEntity2 : newsTypeEntity1;
 
-                        this.send(convo, address, true, newsTypeEntity2);
+                        this.send(convo, address, newsTypeEntity2);
+                        convo.next();
                     });
                     convo.activate();
 
                 } else {
 
                     const address = await geocodeService.geocode(addressEntity);
-                    this.send(convo, address, false, newsTypeEntity1);
+                    this.send(convo, address, newsTypeEntity1);
+                    convo.activate();
 
                 }
 
@@ -50,7 +52,7 @@ export class NewsConversation {
         });
     }
 
-    public async send(convo: Conversation<ISlackMessage>, address: any, next: boolean, news_type?: CategoryNews) {
+    public async send(convo: Conversation<ISlackMessage>, address: any, news_type?: CategoryNews) {
 
         if (!address || CountryList.indexOf(address.country_code) === -1) {
             const formatAddress = address && address.formatted_address ? ', *' + address.formatted_address + '*, ' : ' ';
@@ -78,11 +80,6 @@ export class NewsConversation {
             });
         }
 
-        if (next) {
-            convo.next();
-        } else {
-            convo.activate();
-        }
     }
 
 }

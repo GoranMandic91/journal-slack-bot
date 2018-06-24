@@ -43,7 +43,7 @@ export class CronConversation {
                                             if (!err) {
                                                 const [news, weather] = await Promise.all([
                                                     newsService.get(user.address.country_code),
-                                                    weatherService.getByLocationAndTime(user.address.location.lat, user.address.location.lng, moment()),
+                                                    weatherService.getByLocationAndTime(user.address.location.lat, user.address.location.lng, { moment: moment(), grain: 'day' }),
                                                 ]);
 
                                                 const attachments = newsService.formatNews(news);

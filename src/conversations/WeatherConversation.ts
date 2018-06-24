@@ -22,7 +22,7 @@ export class WeatherConversation {
             bot.createConversation(message, async (err, convo) => {
 
                 let addressEntity = witService.getAddressEntity(message.entities);
-                const dateTimeEntity = witService.getDateTimeEntity(message.entities);
+                let dateTimeEntity = witService.getDateTimeEntity(message.entities);
 
                 if (!addressEntity) {
 
@@ -33,22 +33,34 @@ export class WeatherConversation {
                     }, async (response: ISlackMessage, convo) => {
                         addressEntity = witService.getAddressEntity(response.entities);
                         const address = await geocodeService.geocode(addressEntity);
-                        const time = dateTimeEntity ? moment(dateTimeEntity) : moment();
-                        this.send(convo, address, time, true);
+
+                        const dateTimeEntity2 = witService.getDateTimeEntity(response.entities);
+                        dateTimeEntity = dateTimeEntity2 ? dateTimeEntity2 : dateTimeEntity;
+                        const date = {
+                            moment: dateTimeEntity ? moment(dateTimeEntity.value) : moment(),
+                            grain: dateTimeEntity ? dateTimeEntity.grain : 'day',
+                        };
+
+                        this.send(convo, address, date);
+                        convo.next();
                     });
                     convo.activate();
 
                 } else {
                     const address = await geocodeService.geocode(addressEntity);
-                    const time = dateTimeEntity ? moment(dateTimeEntity) : moment();
-                    this.send(convo, address, time, false);
+                    const date = {
+                        moment: dateTimeEntity ? moment(dateTimeEntity.value) : moment(),
+                        grain: dateTimeEntity ? dateTimeEntity.grain : 'day',
+                    };
+                    this.send(convo, address, date);
+                    convo.activate();
                 }
 
             });
         });
     }
 
-    public async send(convo: Conversation<ISlackMessage>, address: any, time: any, next: boolean) {
+    public async send(convo: Conversation<ISlackMessage>, address: any, date: any) {
 
         if (!address) {
             convo.say({
@@ -59,7 +71,7 @@ export class WeatherConversation {
                 text: 'Here you go :man-tipping-hand::skin-tone-2:',
             }, 'end_conversation');
 
-            await weatherService.getByLocationAndTime(address.location.lat, address.location.lng, time).then((weather) => {
+            await weatherService.getByLocationAndTime(address.location.lat, address.location.lng, date).then((weather) => {
 
                 convo.addMessage({
                     text: 'I\'m getting weather forecast for you, please wait for a second :simple_smile:',
@@ -74,11 +86,7 @@ export class WeatherConversation {
                 }, 'get_weather');
             });
         }
-        if (next) {
-            convo.next();
-        } else {
-            convo.activate();
-        }
+
     }
 
 }

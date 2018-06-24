@@ -13,6 +13,7 @@ export interface IWeather {
     precipProbability?: number;
     precipAccumulation?: number;
     precipType?: string;
+    temperature?: number;
     temperatureHigh?: number;
     temperatureHighTime?: number;
     temperatureLow?: number;

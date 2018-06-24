@@ -33,11 +33,24 @@ export class WitService {
     }
 
     public getDateTimeEntity(entities: any) {
-        let dateEntity = '';
         if (entities && entities.datetime && entities.datetime[0]) {
-            dateEntity = entities.datetime[0].value;
+            const dateEntity: any = {};
+            if (entities.datetime[0].type === 'value') {
+                dateEntity.value = entities.datetime[0].value;
+                dateEntity.grain = entities.datetime[0].grain;
+            } else {
+                dateEntity.value = entities.datetime[0].from.value;
+                dateEntity.grain = entities.datetime[0].from.grain;
+            }
+
+            if (['second', 'minute', 'hour'].indexOf(dateEntity.grain) > -1) {
+                dateEntity.grain = 'hour';
+            } else {
+                dateEntity.grain = 'day';
+            }
+            return dateEntity;
         }
-        return dateEntity;
+        return null;
     }
 
 }

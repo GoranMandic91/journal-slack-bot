@@ -28,7 +28,7 @@ export class WeatherService {
 
     public async getByLocationAndTime(lat: number, lng: number, date: any): Promise<IWeather> {
 
-        const unixtime = date.unix();
+        const unixtime = date.moment.unix();
         const url = `${weatherApi}/${weatherApiKey}/${lat},${lng},${unixtime}?units=si`;
 
         const options = {
@@ -38,7 +38,19 @@ export class WeatherService {
         };
 
         const response = await rp(options);
-        return { ...response.daily.data[0], longitude: response.longitude, latitude: response.latitude };
+        if (date.grain === 'hour') {
+            return {
+                ...response.currently,
+                temperature: response.currently.temperature,
+                longitude: response.longitude,
+                latitude: response.latitude,
+            };
+        }
+        return {
+            ...response.daily.data[0],
+            longitude: response.longitude,
+            latitude: response.latitude,
+        };
 
     }
 
@@ -57,16 +69,21 @@ export class WeatherService {
                     value: `_${weather.summary}_`,
                     short: false,
                 },
-                {
+                weather.temperatureLow ? {
                     title: '',
                     value: '*Low:* `' + weather.temperatureLow.toFixed(0) + ' °C`',
                     short: true,
-                },
-                {
+                } : null,
+                weather.temperatureHigh ? {
                     title: '',
                     value: '*High:* `' + weather.temperatureHigh.toFixed(0) + ' °C`',
                     short: true,
-                },
+                } : null,
+                weather.temperature ? {
+                    title: '',
+                    value: '*Temperature:* `' + weather.temperature.toFixed(0) + ' °C`',
+                    short: false,
+                } : null,
                 {
                     title: '',
                     value: '*Humidity:* `' + (weather.humidity * 100).toFixed(0) + ' %`',
