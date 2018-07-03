@@ -69,41 +69,41 @@ export class WeatherService {
                     value: `_${weather.summary}_`,
                     short: false,
                 },
-                weather.temperatureLow ? {
+                weather.hasOwnProperty('temperatureLow') ? {
                     title: '',
                     value: '*Low:* `' + weather.temperatureLow.toFixed(0) + ' °C`',
                     short: true,
                 } : null,
-                weather.temperatureHigh ? {
+                weather.hasOwnProperty('temperatureHigh') ? {
                     title: '',
                     value: '*High:* `' + weather.temperatureHigh.toFixed(0) + ' °C`',
                     short: true,
                 } : null,
-                weather.temperature ? {
+                weather.hasOwnProperty('temperature') ? {
                     title: '',
                     value: '*Temperature:* `' + weather.temperature.toFixed(0) + ' °C`',
                     short: false,
                 } : null,
-                {
+                weather.hasOwnProperty('humidity') ? {
                     title: '',
                     value: '*Humidity:* `' + (weather.humidity * 100).toFixed(0) + ' %`',
                     short: true,
-                },
-                {
+                } : null,
+                weather.hasOwnProperty('precipProbability') ? {
                     title: '',
                     value: '*Precip:* `' + (weather.precipProbability * 100).toFixed(0) + ' %`',
                     short: true,
-                },
-                {
+                } : null,
+                weather.hasOwnProperty('pressure') ? {
                     title: '',
                     value: '*Pressure:* `' + weather.pressure.toFixed(0) + ' hPa`',
                     short: true,
-                },
-                {
+                } : null,
+                weather.hasOwnProperty('uvIndex') ? {
                     title: '',
                     value: '*UV Index:* `' + weather.uvIndex.toFixed(0) + '`',
                     short: true,
-                },
+                } : null,
             ],
             footer: `<https://darksky.net/details/${weather.latitude},${weather.longitude}/${moment(weather.time * 1000).format('YYYY-MM-DD')}/ca12/en| Dark Sky>`,
             footer_icon: 'http://haverzine.com/wp-content/uploads/2014/01/Dark-Sky-logo-on-mevvy.com_.png',

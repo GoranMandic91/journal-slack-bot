@@ -11,7 +11,7 @@ export class UserJoinConversation {
 
     public configure() {
 
-        this.controller.on('user_group_join', (bot, message) => {
+        this.controller.on('team_join', (bot, message) => {
             bot.api.users.info({ user: message.user }, (error, response) => {
                 bot.startPrivateConversation({ user: message.user }, (err, convo) => {
                     if (err) {
