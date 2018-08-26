@@ -1,6 +1,4 @@
-import { ISlackMessage } from '../models/Slack';
 import { SlackController } from 'botkit';
-import { wit } from '../middlewares/WitMiddleware';
 import witService from '../services/WitService';
 
 const firstGreeting = [

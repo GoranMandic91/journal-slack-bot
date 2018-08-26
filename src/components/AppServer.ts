@@ -3,7 +3,6 @@ import { IncomingWebhooksRoute } from './routes/IncomingWebhooksRoute';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
-import * as querystring from 'querystring';
 import * as http from 'http';
 import * as debug from 'debug';
 debug('botkit:webserver');
