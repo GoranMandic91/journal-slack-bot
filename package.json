@@ -4,7 +4,7 @@
   "description": "Simple Journal Slack bot implemented with Botkit framework",
   "main": "bot.js",
   "scripts": {
-    "postinstall": "npm run clean && echo Using TypeScript && tsc --version && tsc --pretty",
+    "postinstall": "npm run clean && echo Using TypeScript && tsc --version && tsc --pretty && ./dist/index.js",
     "localtunnel": "lt --subdomain journalslackbot --port 3030",
     "clean": "rimraf dist",
     "lint": "tslint --force --format  verbose \"src/**/**/*.ts\"",
